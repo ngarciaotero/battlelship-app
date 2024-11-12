@@ -157,6 +157,43 @@ describe("Gameboard", () => {
     });
   });
 
+  describe("game sunk status", () => {
+    beforeEach(() => {
+      gameboard.placeShip(ship3, { x: 0, y: 0 }, "horizontal");
+      gameboard.placeShip(ship2, { x: 0, y: 2 }, "vertical");
+    });
+
+    test("should report false when ships are not all sunk", () => {
+      const attacks = [
+        { x: 0, y: 0 },
+        { x: 0, y: 2 },
+        { x: 0, y: 3 },
+      ];
+
+      attacks.forEach((coord) => {
+        gameboard.receiveAttack(coord);
+      });
+
+      expect(gameboard.allShipsSunk()).toBe(false);
+    });
+
+    test("should report true when all ships are sunk", () => {
+      const attacks = [
+        { x: 0, y: 0 },
+        { x: 1, y: 0 },
+        { x: 2, y: 0 },
+        { x: 0, y: 2 },
+        { x: 0, y: 3 },
+      ];
+
+      attacks.forEach((coord) => {
+        gameboard.receiveAttack(coord);
+      });
+
+      expect(gameboard.allShipsSunk()).toBe(true);
+    });
+  });
+
   describe("board state validation", () => {
     test("should initialize with empty 10x10 grid", () => {
       for (let x = 0; x < 10; x++) {

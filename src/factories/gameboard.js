@@ -12,6 +12,7 @@ export function createGameboard() {
     .map(() => Array(BOARD_SIZE).fill(null));
 
   const missedAttacksList = [];
+  const placedShips = new Set();
 
   function isPositionWithinBounds(position) {
     return (
@@ -122,6 +123,7 @@ export function createGameboard() {
 
     placeShipAtPositions(shipPositions, ship);
     lockPositions(surroundingPositions);
+    placedShips.add(ship);
 
     return true;
   }
@@ -173,6 +175,13 @@ export function createGameboard() {
     board[position.x][position.y] = value;
   }
 
+  function allShipsSunk() {
+    return (
+      placedShips.size > 0 &&
+      Array.from(placedShips).every((ship) => ship.isSunk())
+    );
+  }
+
   return {
     getShipAt,
     placeShip,
@@ -180,5 +189,6 @@ export function createGameboard() {
     get missedAttacks() {
       return getMissedAttacks();
     },
+    allShipsSunk,
   };
 }

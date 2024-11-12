@@ -3,14 +3,23 @@ const AXIS = Object.freeze({ HORIZONTAL: "horizontal", VERTICAL: "vertical" });
 
 const LOCKED_POSITION = 0;
 const EMPTY_POSITION = null;
+const MISSED_POSITION = -1;
+const HIT_POSITION = 1;
 
 export function createGameboard() {
   const board = Array(BOARD_SIZE)
     .fill(null)
     .map(() => Array(BOARD_SIZE).fill(null));
 
-  function isPositionWithinBounds({ x, y }) {
-    return x >= 0 && y >= 0 && x < BOARD_SIZE && y < BOARD_SIZE;
+  const missedAttacksList = [];
+
+  function isPositionWithinBounds(position) {
+    return (
+      position.x >= 0 &&
+      position.y >= 0 &&
+      position.x < BOARD_SIZE &&
+      position.y < BOARD_SIZE
+    );
   }
 
   function isShipInBounds(startPos, shipLength, orientation) {
@@ -84,13 +93,13 @@ export function createGameboard() {
 
   function placeShipAtPositions(positions, ship) {
     positions.forEach((pos) => {
-      board[pos.x][pos.y] = ship;
+      setPositionValue({ x: pos.x, y: pos.y }, ship);
     });
   }
 
   function lockPositions(positions) {
     positions.forEach((pos) => {
-      board[pos.x][pos.y] = LOCKED_POSITION;
+      setPositionValue({ x: pos.x, y: pos.y }, LOCKED_POSITION);
     });
   }
 
@@ -121,5 +130,55 @@ export function createGameboard() {
     return board[position.x][position.y];
   }
 
-  return { getShipAt, placeShip };
+  function receiveAttack(position) {
+    if (!isValidAttackPosition(position)) return false;
+
+    return handleAttackResult(position);
+  }
+
+  function isValidAttackPosition(position) {
+    if (!isPositionWithinBounds(position)) return false;
+
+    const currentValue = getShipAt(position);
+    return currentValue !== HIT_POSITION && currentValue !== MISSED_POSITION;
+  }
+
+  function recordMissedAttack(position) {
+    missedAttacksList.push({ x: position.x, y: position.y });
+    setPositionValue(position, MISSED_POSITION);
+  }
+
+  function recordHit(position, ship) {
+    ship.hit();
+    setPositionValue(position, HIT_POSITION);
+  }
+
+  function handleAttackResult(position) {
+    const targetShip = getShipAt(position);
+
+    if (targetShip === EMPTY_POSITION || targetShip === LOCKED_POSITION) {
+      recordMissedAttack(position);
+    } else {
+      recordHit(position, targetShip);
+    }
+
+    return true;
+  }
+
+  function getMissedAttacks() {
+    return [...missedAttacksList];
+  }
+
+  function setPositionValue(position, value) {
+    board[position.x][position.y] = value;
+  }
+
+  return {
+    getShipAt,
+    placeShip,
+    receiveAttack,
+    get missedAttacks() {
+      return getMissedAttacks();
+    },
+  };
 }

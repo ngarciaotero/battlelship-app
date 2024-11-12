@@ -118,6 +118,45 @@ describe("Gameboard", () => {
     });
   });
 
+  describe("receive attack", () => {
+    beforeEach(() => {
+      gameboard.placeShip(ship3, { x: 0, y: 0 }, "horizontal");
+    });
+
+    test("should record a hit on a ship", () => {
+      const attack = gameboard.receiveAttack({ x: 0, y: 0 });
+
+      expect(attack).toBe(true);
+      expect(ship3.hits).toBe(1);
+    });
+
+    test("should record a missed attack and track its coordinates", () => {
+      gameboard.receiveAttack({ x: 0, y: 1 });
+      gameboard.receiveAttack({ x: 0, y: 2 });
+
+      const missedAttacks = gameboard.missedAttacks;
+
+      expect(missedAttacks).toContainEqual({ x: 0, y: 1 });
+      expect(missedAttacks).toContainEqual({ x: 0, y: 2 });
+
+      expect(ship3.hits).toBe(0);
+    });
+
+    test("should not allow repeated attacks on the same coordinate", () => {
+      gameboard.receiveAttack({ x: 0, y: 0 });
+      const repeatAttack = gameboard.receiveAttack({ x: 0, y: 0 });
+
+      expect(repeatAttack).toBe(false);
+    });
+
+    test("should reject attacks outside board boundaries", () => {
+      expect(gameboard.receiveAttack({ x: -1, y: 0 })).toBe(false);
+      expect(gameboard.receiveAttack({ x: 11, y: 0 })).toBe(false);
+      expect(gameboard.receiveAttack({ x: 0, y: -11 })).toBe(false);
+      expect(gameboard.receiveAttack({ x: 0, y: 11 })).toBe(false);
+    });
+  });
+
   describe("board state validation", () => {
     test("should initialize with empty 10x10 grid", () => {
       for (let x = 0; x < 10; x++) {
@@ -125,6 +164,22 @@ describe("Gameboard", () => {
           expect(gameboard.getShipAt({ x, y })).toBeNull();
         }
       }
+    });
+
+    test("should track hit and miss markers", () => {
+      gameboard.placeShip(ship2, { x: 0, y: 0 }, "horizontal");
+      const attacks = [
+        { x: 0, y: 0 },
+        { x: 1, y: 1 },
+        { x: 1, y: 0 },
+      ];
+
+      attacks.forEach((coord) => {
+        gameboard.receiveAttack(coord);
+      });
+
+      expect(gameboard.getShipAt({ x: 0, y: 0 })).toBe(1);
+      expect(gameboard.getShipAt({ x: 1, y: 1 })).toBe(-1);
     });
   });
 });

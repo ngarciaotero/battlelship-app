@@ -23,4 +23,14 @@ describe("Player", () => {
       expect(realPlayer).not.toBe(realPlayer2);
     });
   });
+
+  describe("Player Gameboard", () => {
+    test("each player has its own gameboard", () => {
+      expect(realPlayer.gameboard).toBeDefined();
+    });
+
+    test("each player has a unique gameboard instance", () => {
+      expect(realPlayer.gameboard).not.toBe(computerPlayer.gameboard);
+    });
+  });
 });

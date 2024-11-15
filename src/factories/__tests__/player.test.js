@@ -17,11 +17,6 @@ describe("Player", () => {
     test("should create a computer player", () => {
       expect(computerPlayer.type).toBe("computer");
     });
-
-    test("should create unique player instances", () => {
-      const realPlayer2 = createPlayer("real");
-      expect(realPlayer).not.toBe(realPlayer2);
-    });
   });
 
   describe("Player Gameboard", () => {

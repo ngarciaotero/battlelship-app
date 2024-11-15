@@ -17,6 +17,10 @@ describe("Player", () => {
     test("should create a computer player type", () => {
       expect(computerPlayer.type).toBe("computer");
     });
+
+    test("should throw error if type is not 'real' or 'computer'", () => {
+      expect(() => createPlayer("invalidComputer")).toThrow();
+    });
   });
 
   describe("Player Gameboard", () => {

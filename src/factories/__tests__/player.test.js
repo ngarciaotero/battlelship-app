@@ -9,12 +9,12 @@ describe("Player", () => {
     computerPlayer = createPlayer("computer");
   });
 
-  describe("Initialize Player", () => {
-    test("should create a real player", () => {
+  describe("player type initialization", () => {
+    test("should create a real player type", () => {
       expect(realPlayer.type).toBe("real");
     });
 
-    test("should create a computer player", () => {
+    test("should create a computer player type", () => {
       expect(computerPlayer.type).toBe("computer");
     });
   });

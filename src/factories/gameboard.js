@@ -182,6 +182,10 @@ export function createGameboard() {
     );
   }
 
+  function getBoard() {
+    return board.map((row) => [...row]);
+  }
+
   return {
     getShipAt,
     placeShip,
@@ -190,5 +194,8 @@ export function createGameboard() {
       return getMissedAttacks();
     },
     allShipsSunk,
+    get board() {
+      return getBoard();
+    },
   };
 }

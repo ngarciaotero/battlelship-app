@@ -195,12 +195,21 @@ describe("Gameboard", () => {
   });
 
   describe("board state validation", () => {
-    test("should initialize with empty 10x10 grid", () => {
-      for (let x = 0; x < 10; x++) {
-        for (let y = 0; y < 10; y++) {
-          expect(gameboard.getShipAt({ x, y })).toBeNull();
-        }
-      }
+    test("should initialize as 10x10 array", () => {
+      expect(Array.isArray(gameboard.board)).toBe(true);
+      expect(gameboard.board.length).toBe(10);
+      gameboard.board.forEach((row) => {
+        expect(Array.isArray(row)).toBe(true);
+        expect(row.length).toBe(10);
+      });
+    });
+
+    test("should initialize array with all null values", () => {
+      gameboard.board.forEach((row) => {
+        row.forEach((position) => {
+          expect(position).toBeNull();
+        });
+      });
     });
 
     test("should track hit and miss markers", () => {

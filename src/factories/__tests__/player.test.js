@@ -1,4 +1,11 @@
+const { createGameboard } = require("../gameboard.js");
 const { createPlayer } = require("../player.js");
+
+jest.mock("../gameboard.js", () => ({
+  createGameboard: jest.fn(() => ({
+    board: Array(10).fill(null),
+  })),
+}));
 
 describe("Player", () => {
   let realPlayer;
@@ -23,13 +30,26 @@ describe("Player", () => {
     });
   });
 
-  describe("Player Gameboard", () => {
-    test("each player has its own gameboard", () => {
-      expect(realPlayer.gameboard).toBeDefined();
+  describe("gameboard initialization", () => {
+    let emptyGameboard;
+
+    beforeEach(() => {
+      emptyGameboard = createGameboard();
+      jest.clearAllMocks();
     });
 
-    test("each player has a unique gameboard instance", () => {
-      expect(realPlayer.gameboard).not.toBe(computerPlayer.gameboard);
+    describe("real player", () => {
+      test("should have an empty gameboard on initialization", () => {
+        expect(realPlayer.gameboard.board).toEqual(emptyGameboard.board);
+        expect(createGameboard).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe("computer player", () => {
+      test("should have pre-populated gameboard on initialization", () => {
+        const computerBoard = computerPlayer.gameboard.board;
+        expect(computerBoard).not.toEqual(emptyGameboard.board);
+      });
     });
   });
 });

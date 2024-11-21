@@ -1,4 +1,5 @@
 import { createGameboard } from "./gameboard";
+import { generateRandomGameboard } from "./boardGenerator.js";
 
 const PLAYER_TYPE = Object.freeze({ REAL: "real", COMPUTER: "computer" });
 
@@ -14,7 +15,10 @@ export function createPlayer(playerType) {
   validatePlayerType(playerType);
 
   const type = playerType;
-  const gameboard = createGameboard();
+  let gameboard =
+    playerType === PLAYER_TYPE.REAL
+      ? createGameboard()
+      : generateRandomGameboard();
 
   function getType() {
     return type;

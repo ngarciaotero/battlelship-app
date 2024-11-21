@@ -1,12 +1,11 @@
 import { createGameboard } from "./gameboard";
 
-const REAL_PLAYER = "real";
-const COMPUTER_PLAYER = "computer";
+const PLAYER_TYPE = Object.freeze({ REAL: "real", COMPUTER: "computer" });
 
 function validatePlayerType(playerType) {
-  if (![REAL_PLAYER, COMPUTER_PLAYER].includes(playerType)) {
+  if (![PLAYER_TYPE.REAL, PLAYER_TYPE.COMPUTER].includes(playerType)) {
     throw new Error(
-      `Invalid player type: type must be "${REAL_PLAYER}" or "${COMPUTER_PLAYER}"`
+      `Invalid player type: type must be "${PLAYER_TYPE.REAL}" or "${PLAYER_TYPE.COMPUTER}"`
     );
   }
 }

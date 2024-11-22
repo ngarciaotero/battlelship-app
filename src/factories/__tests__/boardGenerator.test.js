@@ -45,7 +45,13 @@ describe("Random Board Generator", () => {
       expect(createShip).toHaveBeenCalledWith(length);
     });
 
-    expect(mockPlaceShip.mock.calls.length).toBe(SHIP_LENGTHS.length);
+    expect(ships).toHaveLength(SHIP_LENGTHS.length);
+
+    ships.forEach((ship) => {
+      expect(ship).toHaveProperty("length");
+      expect(ship).toHaveProperty("position");
+      expect(ship).toHaveProperty("orientation");
+    });
   });
 
   test("should fall back to preset configuration when placement fails", () => {
@@ -56,8 +62,13 @@ describe("Random Board Generator", () => {
 
     const ships = createRandomShipConfig();
 
-    expect(board).toBeDefined();
-    expect(board.placeShip).toBeDefined();
+    expect(ships).toBeDefined();
+    expect(ships).toHaveLength(5);
+    ships.forEach((ship) => {
+      expect(ship).toHaveProperty("length");
+      expect(ship).toHaveProperty("position");
+      expect(ship).toHaveProperty("orientation");
+    });
   });
 
   test("should return preset configuration when error occurs during generation", () => {
@@ -67,8 +78,13 @@ describe("Random Board Generator", () => {
 
     const ships = createRandomShipConfig();
 
-    expect(board).toBeDefined();
-    expect(board.placeShip).toBeDefined();
+    expect(ships).toBeDefined();
+    expect(ships).toHaveLength(5);
+    ships.forEach((ship) => {
+      expect(ship).toHaveProperty("length");
+      expect(ship).toHaveProperty("position");
+      expect(ship).toHaveProperty("orientation");
+    });
   });
 
   test("should place ships in order of descending length", () => {

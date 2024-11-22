@@ -92,7 +92,7 @@ function createShipPlacer() {
       if (!position) break;
 
       if (board.placeShip(ship, position, orientation)) {
-        return { success: true, attempts };
+        return { success: true, position, orientation };
       }
     }
 

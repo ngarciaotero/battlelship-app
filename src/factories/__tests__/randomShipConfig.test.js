@@ -1,4 +1,4 @@
-const { createRandomShipConfig } = require("../boardGenerator.js");
+const { createRandomShipConfig } = require("../randomShipConfig.js");
 const { createGameboard } = require("../gameboard.js");
 const { createShip } = require("../ship.js");
 

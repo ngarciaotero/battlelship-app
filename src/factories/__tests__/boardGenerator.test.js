@@ -17,6 +17,7 @@ describe("Random Board Generator", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.spyOn(console, "error").mockImplementation(() => {});
 
     mockPlaceShip = jest.fn().mockReturnValue(true);
 
@@ -29,6 +30,10 @@ describe("Random Board Generator", () => {
     createShip.mockImplementation((length) => ({
       length,
     }));
+  });
+
+  afterEach(() => {
+    console.error.mockRestore();
   });
 
   test("should return a gameboard with correct number of ships", () => {

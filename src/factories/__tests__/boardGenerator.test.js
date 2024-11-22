@@ -90,6 +90,7 @@ describe("Random Board Generator", () => {
   test("should place ships in order of descending length", () => {
     const ships = createRandomShipConfig();
 
-    expect(shipLengthCalls).toEqual(SHIP_LENGTHS);
+    const shipLengths = ships.map((ship) => ship.length);
+    expect(shipLengths).toEqual(SHIP_LENGTHS);
   });
 });

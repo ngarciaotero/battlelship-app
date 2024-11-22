@@ -102,8 +102,8 @@ function createShipPlacer() {
   return { placeShipRandomly };
 }
 
-function createPresetBoardGenerator() {
-  const presetConfigurations = [
+function presetShipConfig() {
+  return [
     {
       length: 5,
       position: { x: 0, y: 0 },
@@ -130,15 +130,6 @@ function createPresetBoardGenerator() {
       orientation: BOARD_CONFIG.AXIS.HORIZONTAL,
     },
   ];
-
-  return () => {
-    const board = createGameboard();
-    presetConfigurations.forEach((config) => {
-      const ship = createShip(config.length);
-      board.placeShip(ship, config.position, config.orientation);
-    });
-    return board;
-  };
 }
 
 export function generateRandomGameboard() {

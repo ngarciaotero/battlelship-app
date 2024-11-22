@@ -132,32 +132,37 @@ function presetShipConfig() {
   ];
 }
 
-export function generateRandomGameboard() {
+export function createRandomShipConfig() {
   try {
-    const board = createGameboard();
+    const gameboard = createGameboard();
     const positionTracker = createPositionTracker();
     const shipPlacer = createShipPlacer();
-    const getPresetBoard = createPresetBoardGenerator();
+    const ships = [];
 
     for (const length of BOARD_CONFIG.SHIP_LENGTHS) {
       const ship = createShip(length);
       const placementResult = shipPlacer.placeShipRandomly(
-        board,
+        gameboard,
         ship,
         positionTracker
       );
 
       if (!placementResult.success) {
         console.warn(
-          `Failed to place ship of length ${length}. Falling back to preset board.`
+          `Failed to place ship of length ${length}: ${placementResult.reason}. Falling back to preset board.`
         );
-        return getPresetBoard();
+        return presetShipConfig();
       }
+
+      ships.push({
+        length,
+        position: placementResult.position,
+        orientation: placementResult.orientation,
+      });
     }
-    return board;
+    return ships;
   } catch (error) {
-    const getPresetBoard = createPresetBoardGenerator();
     console.error("Gameboard generation failed:", error);
-    return getPresetBoard();
+    return presetShipConfig();
   }
 }

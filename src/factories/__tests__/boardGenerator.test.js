@@ -1,4 +1,4 @@
-const { generateRandomGameboard } = require("../boardGenerator.js");
+const { createRandomShipConfig } = require("../boardGenerator.js");
 const { createGameboard } = require("../gameboard.js");
 const { createShip } = require("../ship.js");
 
@@ -32,7 +32,7 @@ describe("Random Board Generator", () => {
   });
 
   test("should return a gameboard with correct number of ships", () => {
-    generateRandomGameboard();
+    const ships = createRandomShipConfig();
 
     expect(createGameboard).toHaveBeenCalledTimes(1);
 
@@ -49,7 +49,7 @@ describe("Random Board Generator", () => {
       .mockReturnValueOnce(true)
       .mockReturnValueOnce(false);
 
-    const board = generateRandomGameboard();
+    const ships = createRandomShipConfig();
 
     expect(board).toBeDefined();
     expect(board.placeShip).toBeDefined();
@@ -60,18 +60,14 @@ describe("Random Board Generator", () => {
       throw new Error();
     });
 
-    const board = generateRandomGameboard();
+    const ships = createRandomShipConfig();
 
     expect(board).toBeDefined();
     expect(board.placeShip).toBeDefined();
   });
 
   test("should place ships in order of descending length", () => {
-    generateRandomGameboard();
-
-    const shipLengthCalls = mockPlaceShip.mock.calls.map(
-      (call) => call[0].length
-    );
+    const ships = createRandomShipConfig();
 
     expect(shipLengthCalls).toEqual(SHIP_LENGTHS);
   });

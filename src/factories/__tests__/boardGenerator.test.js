@@ -36,7 +36,7 @@ describe("Random Board Generator", () => {
     console.error.mockRestore();
   });
 
-  test("should return a gameboard with correct number of ships", () => {
+  test("should return correct number of ships with valid positions and orientations", () => {
     const ships = createRandomShipConfig();
 
     expect(createGameboard).toHaveBeenCalledTimes(1);
@@ -48,7 +48,7 @@ describe("Random Board Generator", () => {
     expect(mockPlaceShip.mock.calls.length).toBe(SHIP_LENGTHS.length);
   });
 
-  test("should fall back to preset board when placement fails", () => {
+  test("should fall back to preset configuration when placement fails", () => {
     mockPlaceShip
       .mockReturnValueOnce(true)
       .mockReturnValueOnce(true)
@@ -60,7 +60,7 @@ describe("Random Board Generator", () => {
     expect(board.placeShip).toBeDefined();
   });
 
-  test("should return preset board when error occurs during generation", () => {
+  test("should return preset configuration when error occurs during generation", () => {
     createGameboard.mockImplementationOnce(() => {
       throw new Error();
     });

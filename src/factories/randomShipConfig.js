@@ -137,7 +137,7 @@ export function createRandomShipConfig() {
     const gameboard = createGameboard();
     const positionTracker = createPositionTracker();
     const shipPlacer = createShipPlacer();
-    const ships = [];
+    const shipConfigs = [];
 
     for (const length of BOARD_CONFIG.SHIP_LENGTHS) {
       const ship = createShip(length);
@@ -154,15 +154,15 @@ export function createRandomShipConfig() {
         return presetShipConfig();
       }
 
-      ships.push({
+      shipConfigs.push({
         length,
         position: placementResult.position,
         orientation: placementResult.orientation,
       });
     }
-    return ships;
+    return shipConfigs;
   } catch (error) {
-    console.error("Gameboard generation failed:", error);
+    console.error("Failed to generate ship configurations:", error);
     return presetShipConfig();
   }
 }

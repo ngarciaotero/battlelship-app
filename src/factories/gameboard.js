@@ -7,12 +7,9 @@ const MISSED_POSITION = -1;
 const HIT_POSITION = 1;
 
 export function createGameboard() {
-  const board = Array(BOARD_SIZE)
-    .fill(null)
-    .map(() => Array(BOARD_SIZE).fill(null));
-
+  let board = createEmptyBoard();
   const missedAttacksList = [];
-  const placedShips = new Set();
+  let placedShips = new Set();
 
   function isPositionWithinBounds(position) {
     return (
@@ -192,6 +189,11 @@ export function createGameboard() {
       .map(() => Array(BOARD_SIZE).fill(null));
   }
 
+  function resetBoard() {
+    board = createEmptyBoard();
+    placedShips = new Set();
+  }
+
   return {
     getShipAt,
     placeShip,
@@ -203,5 +205,6 @@ export function createGameboard() {
     get board() {
       return getBoard();
     },
+    resetBoard,
   };
 }

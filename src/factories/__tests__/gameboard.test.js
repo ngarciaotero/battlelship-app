@@ -153,4 +153,18 @@ describe("Gameboard", () => {
       });
     });
   });
+
+  describe("board reset and population", () => {
+    test("should reset board to empty state", () => {
+      gameboard.placeShip(ship3, { x: 0, y: 0 }, "horizontal");
+      gameboard.resetBoard();
+
+      const board = gameboard.board;
+      board.forEach((row) => {
+        row.forEach((cell) => {
+          expect(cell).toBeNull;
+        });
+      });
+    });
+  });
 });

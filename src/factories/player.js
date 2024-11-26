@@ -35,6 +35,20 @@ export function createPlayer(playerType) {
     return gameboard;
   }
 
+  function resetShipConfig() {
+    try {
+      gameboard.resetBoard();
+      gameboard.populateRandomly();
+      return true;
+    } catch (error) {
+      console.error(
+        `Failed to regenerate a new ship configuration for ${type} player: `,
+        error
+      );
+      return false;
+    }
+  }
+
   return {
     get type() {
       return getType();
@@ -42,5 +56,6 @@ export function createPlayer(playerType) {
     get gameboard() {
       return getGameboard();
     },
+    resetShipConfig,
   };
 }

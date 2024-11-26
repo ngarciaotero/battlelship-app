@@ -49,4 +49,15 @@ describe("Player", () => {
       expect(realPlayer.type).toBe(originalType);
     });
   });
+
+  describe("reset ship configuration", () => {
+    test("should successfully reset ship configuration", () => {
+      const result = realPlayer.resetShipConfig();
+      expect(result).toBe(true);
+    });
+
+    test("should provide a way to reset configuration for real player", () => {
+      expect(typeof realPlayer.resetShipConfig).toBe("function");
+    });
+  });
 });

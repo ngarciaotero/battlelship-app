@@ -24,7 +24,7 @@ export function createPlayer(playerType) {
     return type;
   }
 
-  function getBoard() {
+  function getGameboard() {
     return gameboard;
   }
 
@@ -33,7 +33,7 @@ export function createPlayer(playerType) {
       return getType();
     },
     get gameboard() {
-      return getBoard();
+      return getGameboard();
     },
   };
 }

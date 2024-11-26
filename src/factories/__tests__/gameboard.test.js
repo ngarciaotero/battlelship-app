@@ -166,5 +166,22 @@ describe("Gameboard", () => {
         });
       });
     });
+
+    test("should populate board randomly", () => {
+      const populated = gameboard.populateRandomly();
+      expect(populated).toBe(true);
+      const board = gameboard.board;
+      let shipCount = 0;
+
+      board.forEach((row) => {
+        row.forEach((cell) => {
+          if (cell !== null && cell !== 0) {
+            shipCount++;
+          }
+        });
+      });
+
+      expect(shipCount).toBeGreaterThan(0);
+    });
   });
 });

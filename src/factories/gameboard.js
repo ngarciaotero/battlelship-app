@@ -1,3 +1,6 @@
+import { createRandomShipConfig } from "./randomShipConfig";
+import { createShip } from "./ship";
+
 const BOARD_SIZE = 10;
 const AXIS = Object.freeze({ HORIZONTAL: "horizontal", VERTICAL: "vertical" });
 
@@ -194,6 +197,23 @@ export function createGameboard() {
     placedShips = new Set();
   }
 
+  function populateRandomly() {
+    try {
+      const shipConfigs = createRandomShipConfig();
+      for (const config of shipConfigs) {
+        const ship = createShip(config.length);
+        const placed = placeShip(ship, config.position, config.orientation);
+        if (!placed) {
+          return false;
+        }
+      }
+      return true;
+    } catch (error) {
+      console.error(`Failed to populate board randomly: ${error}`);
+      return false;
+    }
+  }
+
   return {
     getShipAt,
     placeShip,
@@ -206,5 +226,6 @@ export function createGameboard() {
       return getBoard();
     },
     resetBoard,
+    populateRandomly,
   };
 }

@@ -94,13 +94,13 @@ export function createGameboard() {
 
   function placeShipAtPositions(positions, ship) {
     positions.forEach((pos) => {
-      setPositionValue({ x: pos.x, y: pos.y }, ship);
+      setPositionValue(pos, ship);
     });
   }
 
   function lockPositions(positions) {
     positions.forEach((pos) => {
-      setPositionValue({ x: pos.x, y: pos.y }, LOCKED_POSITION);
+      setPositionValue(pos, LOCKED_POSITION);
     });
   }
 

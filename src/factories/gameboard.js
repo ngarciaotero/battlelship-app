@@ -186,6 +186,12 @@ export function createGameboard() {
     return board.map((row) => [...row]);
   }
 
+  function createEmptyBoard() {
+    return Array(BOARD_SIZE)
+      .fill(null)
+      .map(() => Array(BOARD_SIZE).fill(null));
+  }
+
   return {
     getShipAt,
     placeShip,

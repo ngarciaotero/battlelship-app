@@ -1,5 +1,4 @@
 import { createGameboard } from "./gameboard";
-import { generateRandomGameboard } from "./boardGenerator.js";
 
 const PLAYER_TYPE = Object.freeze({ REAL: "real", COMPUTER: "computer" });
 
@@ -15,16 +14,24 @@ export function createPlayer(playerType) {
   validatePlayerType(playerType);
 
   const type = playerType;
-  let gameboard =
-    playerType === PLAYER_TYPE.REAL
-      ? createGameboard()
-      : generateRandomGameboard();
+  let gameboard = initializeGameboard();
 
   function getType() {
     return type;
   }
 
   function getGameboard() {
+    return gameboard;
+  }
+
+  function initializeGameboard() {
+    const gameboard = createGameboard();
+
+    if (type === PLAYER_TYPE.REAL) return gameboard;
+
+    if (!gameboard.populateRandomly()) {
+      throw new Error("Failed to initialize gameboard for computer player");
+    }
     return gameboard;
   }
 

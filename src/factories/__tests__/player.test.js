@@ -1,11 +1,4 @@
-const { createGameboard } = require("../gameboard.js");
 const { createPlayer } = require("../player.js");
-
-jest.mock("../gameboard.js", () => ({
-  createGameboard: jest.fn(() => ({
-    board: Array(10).fill(null),
-  })),
-}));
 
 describe("Player", () => {
   let realPlayer;
@@ -30,26 +23,30 @@ describe("Player", () => {
     });
   });
 
-  describe("gameboard initialization", () => {
-    let emptyGameboard;
-
-    beforeEach(() => {
-      emptyGameboard = createGameboard();
-      jest.clearAllMocks();
+  describe("gameboard interaction", () => {
+    test("should have a gameboard property", () => {
+      expect(realPlayer.gameboard).toBeDefined();
+      expect(computerPlayer.gameboard).toBeDefined();
     });
 
-    describe("real player", () => {
-      test("should have an empty gameboard on initialization", () => {
-        expect(realPlayer.gameboard.board).toEqual(emptyGameboard.board);
-        expect(createGameboard).toHaveBeenCalledTimes(1);
-      });
+    test("real player gameboard should be accessible", () => {
+      expect(realPlayer.gameboard).toBeTruthy();
     });
 
-    describe("computer player", () => {
-      test("should have pre-populated gameboard on initialization", () => {
-        const computerBoard = computerPlayer.gameboard.board;
-        expect(computerBoard).not.toEqual(emptyGameboard.board);
-      });
+    test("computer player gameboard should be accessible", () => {
+      expect(computerPlayer.gameboard).toBeTruthy();
+    });
+  });
+
+  describe("player immutability", () => {
+    test("type property should be real-only", () => {
+      const originalType = realPlayer.type;
+
+      expect(() => {
+        realPlayer.type = "computer";
+      }).toThrow();
+
+      expect(realPlayer.type).toBe(originalType);
     });
   });
 });

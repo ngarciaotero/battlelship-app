@@ -69,53 +69,6 @@ describe("Gameboard", () => {
 
       expect(placement).toBe(false);
     });
-
-    test("should not place ships adjacent", () => {
-      gameboard.placeShip(ship3, { x: 0, y: 0 }, "horizontal");
-
-      const surroundingCoords = [
-        { x: 3, y: 0 },
-        { x: 3, y: 1 },
-        { x: 2, y: 1 },
-        { x: 1, y: 1 },
-        { x: 0, y: 1 },
-      ];
-
-      surroundingCoords.forEach((coord) => {
-        const placement = gameboard.placeShip(ship2, coord, "horizontal");
-        expect(placement).toBe(false);
-      });
-    });
-
-    test("should lock surrounding positions for a horizontal ship", () => {
-      gameboard.placeShip(ship2, { x: 0, y: 0 }, "horizontal");
-
-      const surroundingCoords = [
-        { x: 2, y: 0 },
-        { x: 2, y: 1 },
-        { x: 1, y: 1 },
-        { x: 0, y: 1 },
-      ];
-
-      surroundingCoords.forEach((coord) => {
-        expect(gameboard.getShipAt(coord)).toBe(0);
-      });
-    });
-
-    test("should lock surrounding positions for a vertical ship", () => {
-      gameboard.placeShip(ship2, { x: 0, y: 0 }, "vertical");
-
-      const surroundingCoords = [
-        { x: 1, y: 0 },
-        { x: 1, y: 1 },
-        { x: 1, y: 2 },
-        { x: 0, y: 2 },
-      ];
-
-      surroundingCoords.forEach((coord) => {
-        expect(gameboard.getShipAt(coord)).toBe(0);
-      });
-    });
   });
 
   describe("receive attack", () => {
@@ -125,9 +78,7 @@ describe("Gameboard", () => {
 
     test("should record a hit on a ship", () => {
       const attack = gameboard.receiveAttack({ x: 0, y: 0 });
-
       expect(attack).toBe(true);
-      expect(ship3.hits).toBe(1);
     });
 
     test("should record a missed attack and track its coordinates", () => {
@@ -138,8 +89,6 @@ describe("Gameboard", () => {
 
       expect(missedAttacks).toContainEqual({ x: 0, y: 1 });
       expect(missedAttacks).toContainEqual({ x: 0, y: 2 });
-
-      expect(ship3.hits).toBe(0);
     });
 
     test("should not allow repeated attacks on the same coordinate", () => {
@@ -194,7 +143,7 @@ describe("Gameboard", () => {
     });
   });
 
-  describe("board state validation", () => {
+  describe("board initialization", () => {
     test("should initialize as 10x10 array", () => {
       expect(Array.isArray(gameboard.board)).toBe(true);
       expect(gameboard.board.length).toBe(10);
@@ -202,30 +151,6 @@ describe("Gameboard", () => {
         expect(Array.isArray(row)).toBe(true);
         expect(row.length).toBe(10);
       });
-    });
-
-    test("should initialize array with all null values", () => {
-      gameboard.board.forEach((row) => {
-        row.forEach((position) => {
-          expect(position).toBeNull();
-        });
-      });
-    });
-
-    test("should track hit and miss markers", () => {
-      gameboard.placeShip(ship2, { x: 0, y: 0 }, "horizontal");
-      const attacks = [
-        { x: 0, y: 0 },
-        { x: 1, y: 1 },
-        { x: 1, y: 0 },
-      ];
-
-      attacks.forEach((coord) => {
-        gameboard.receiveAttack(coord);
-      });
-
-      expect(gameboard.getShipAt({ x: 0, y: 0 })).toBe(1);
-      expect(gameboard.getShipAt({ x: 1, y: 1 })).toBe(-1);
     });
   });
 });

@@ -57,9 +57,20 @@ export function createGameController() {
     );
   }
 
+  function endGame() {
+    if (gameStatus === GAME_STATUS.INACTIVE) return { success: false };
+
+    activePlayers = [];
+    gameStatus = GAME_STATUS.INACTIVE;
+    currentPlayerIndex = -1;
+
+    return { success: true };
+  }
+
   return {
     addPlayers,
     initializeGame,
+    endGame,
     get currentPlayer() {
       return getCurrentPlayer();
     },

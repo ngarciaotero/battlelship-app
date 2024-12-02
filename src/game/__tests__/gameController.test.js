@@ -94,4 +94,23 @@ describe("Game Controller", () => {
       expect(gameController.currentPlayer).toBeNull();
     });
   });
+
+  describe("End game", () => {
+    beforeEach(() => {
+      gameController.addPlayers([player1, player2]);
+      gameController.initializeGame();
+    });
+
+    test("should successfully end an in progress game", () => {
+      const endGameResult = gameController.endGame();
+      expect(endGameResult.success).toBe(true);
+      expect(gameController.gameStatus).toBe("inactive");
+    });
+
+    test("should fail to end a game not in progress", () => {
+      gameController.endGame();
+      const endGameAgain = gameController.endGame();
+      expect(endGameAgain.success).toBe(false);
+    });
+  });
 });

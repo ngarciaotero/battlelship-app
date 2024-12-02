@@ -51,9 +51,9 @@ export function createGameController() {
     return null;
   }
 
-  function getOpponentPlayer(currentIndex = currentPlayerIndex) {
-    if (activePlayers.length === MAX_PLAYERS) {
-      const opponentIndex = currentIndex === 0 ? 1 : 0;
+  function getOpponentPlayer() {
+    if (isValidGameState()) {
+      const opponentIndex = currentPlayerIndex === 0 ? 1 : 0;
       return activePlayers[opponentIndex];
     }
     return null;
@@ -93,6 +93,9 @@ export function createGameController() {
     resetGame,
     get currentPlayer() {
       return getCurrentPlayer();
+    },
+    get opponentPlayer() {
+      return getOpponentPlayer();
     },
     get gameStatus() {
       return gameStatus;

@@ -82,7 +82,7 @@ describe("Game Controller", () => {
     });
   });
 
-  describe("Get current player", () => {
+  describe("Get current and opponent player", () => {
     test("should return current player when game is active", () => {
       gameController.addPlayers([player1, player2]);
       gameController.initializeGame();
@@ -90,8 +90,19 @@ describe("Game Controller", () => {
       expect(gameController.currentPlayer).toBe(player1);
     });
 
-    test("should return null when game is not active", () => {
+    test("should return null if no current player exists", () => {
       expect(gameController.currentPlayer).toBeNull();
+    });
+
+    test("should return opponent player when game is active", () => {
+      gameController.addPlayers([player1, player2]);
+      gameController.initializeGame();
+
+      expect(gameController.opponentPlayer).toBe(player2);
+    });
+
+    test("should return null if no opponent player exists", () => {
+      expect(gameController.opponentPlayer).toBeNull();
     });
   });
 

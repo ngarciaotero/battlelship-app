@@ -49,6 +49,10 @@ export function createPlayer(playerType) {
     }
   }
 
+  function placedShipCount() {
+    return gameboard.placedShips;
+  }
+
   return {
     get type() {
       return getType();
@@ -60,5 +64,6 @@ export function createPlayer(playerType) {
       return true;
     },
     resetShipConfig,
+    placedShipCount,
   };
 }

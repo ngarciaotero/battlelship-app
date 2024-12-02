@@ -44,8 +44,24 @@ export function createGameController() {
     );
   }
 
+  function getCurrentPlayer() {
+    if (isValidGameState()) {
+      return activePlayers[currentPlayerIndex];
+    }
+    return null;
+  }
+
+  function isValidGameState() {
+    return (
+      activePlayers.length === MAX_PLAYERS && gameStatus === GAME_STATUS.ACTIVE
+    );
+  }
+
   return {
     addPlayers,
     initializeGame,
+    get currentPlayer() {
+      return getCurrentPlayer();
+    },
   };
 }

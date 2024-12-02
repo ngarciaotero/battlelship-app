@@ -81,4 +81,17 @@ describe("Game Controller", () => {
       expect(secondInitialization.success).toBe(false);
     });
   });
+
+  describe("Get current player", () => {
+    test("should return current player when game is active", () => {
+      gameController.addPlayers([player1, player2]);
+      gameController.initializeGame();
+
+      expect(gameController.currentPlayer).toBe(player1);
+    });
+
+    test("should return null when game is not active", () => {
+      expect(gameController.currentPlayer).toBeNull();
+    });
+  });
 });

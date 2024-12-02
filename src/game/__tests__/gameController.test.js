@@ -149,4 +149,24 @@ describe("Game Controller", () => {
       expect(player2.resetGameboard).toHaveBeenCalledTimes(1);
     });
   });
+
+  describe("Turn management", () => {
+    beforeEach(() => {
+      gameController.addPlayers([player1, player2]);
+      gameController.initializeGame();
+    });
+
+    test("should switch turn between players", () => {
+      const initialPlayer = gameController.currentPlayer;
+      const switchResult = gameController.switchTurn();
+
+      expect(switchResult.success).toBe(true);
+      expect(gameController.currentPlayer).not.toBe(initialPlayer);
+    });
+
+    test("should fail to switch turn if game is not in progress", () => {
+      gameController.endGame();
+      expect(gameController.switchTurn().success).toBe(false);
+    });
+  });
 });

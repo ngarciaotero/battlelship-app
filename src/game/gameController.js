@@ -5,6 +5,7 @@ export function createGameController() {
   let activePlayers = [];
   let gameStatus = GAME_STATUS.INACTIVE;
   let currentPlayerIndex = -1;
+  let turnCount = 0;
 
   function addPlayers(players) {
     if (gameStatus === GAME_STATUS.ACTIVE)
@@ -71,6 +72,7 @@ export function createGameController() {
     activePlayers = [];
     gameStatus = GAME_STATUS.INACTIVE;
     currentPlayerIndex = -1;
+    turnCount = 0;
 
     return { success: true };
   }
@@ -82,7 +84,17 @@ export function createGameController() {
 
     gameStatus = GAME_STATUS.INACTIVE;
     currentPlayerIndex = -1;
+    turnCount = 0;
 
+    return { success: true };
+  }
+
+  function switchTurn() {
+    if (gameStatus === GAME_STATUS.INACTIVE)
+      return { success: false, error: "No game in progress." };
+
+    turnCount++;
+    currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
     return { success: true };
   }
 
@@ -91,6 +103,7 @@ export function createGameController() {
     initializeGame,
     endGame,
     resetGame,
+    switchTurn,
     get currentPlayer() {
       return getCurrentPlayer();
     },

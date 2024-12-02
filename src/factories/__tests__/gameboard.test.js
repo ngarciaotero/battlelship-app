@@ -184,4 +184,23 @@ describe("Gameboard", () => {
       expect(shipCount).toBeGreaterThan(0);
     });
   });
+
+  describe("reset gameboard", () => {
+    test("should reset board and clear missed attacks", () => {
+      gameboard.placeShip(ship3, { x: 0, y: 0 }, "horizontal");
+      gameboard.receiveAttack({ x: 0, y: 1 });
+      gameboard.receiveAttack({ x: 0, y: 2 });
+
+      gameboard.resetGameboard();
+
+      const board = gameboard.board;
+      board.forEach((row) => {
+        row.forEach((cell) => {
+          expect(cell).toBeNull();
+        });
+      });
+
+      expect(gameboard.missedAttacks.length).toBe(0);
+    });
+  });
 });

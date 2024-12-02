@@ -11,7 +11,7 @@ const HIT_POSITION = 1;
 
 export function createGameboard() {
   let board = createEmptyBoard();
-  const missedAttacksList = [];
+  let missedAttacksList = [];
   let placedShips = new Set();
 
   function isPositionWithinBounds(position) {
@@ -197,6 +197,12 @@ export function createGameboard() {
     placedShips = new Set();
   }
 
+  function resetGameboard() {
+    board = createEmptyBoard();
+    missedAttacksList = [];
+    placedShips = new Set();
+  }
+
   function populateRandomly() {
     try {
       const shipConfigs = createRandomShipConfig();
@@ -227,5 +233,6 @@ export function createGameboard() {
     },
     resetBoard,
     populateRandomly,
+    resetGameboard,
   };
 }

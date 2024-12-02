@@ -1,5 +1,6 @@
 const GAME_STATUS = Object.freeze({ ACTIVE: "active", INACTIVE: "inactive" });
 const MAX_PLAYERS = 2;
+const MIN_TURNS_FOR_WIN = 33;
 
 export function createGameController() {
   let activePlayers = [];
@@ -98,12 +99,24 @@ export function createGameController() {
     return { success: true };
   }
 
+  function determineCurrentWinner() {
+    if (turnCount < MIN_TURNS_FOR_WIN) return null;
+
+    const opponentPlayer = getOpponentPlayer();
+    if (!opponentPlayer) return null;
+
+    return opponentPlayer.isDefeated()
+      ? { winner: getCurrentPlayer(), loser: opponentPlayer }
+      : null;
+  }
+
   return {
     addPlayers,
     initializeGame,
     endGame,
     resetGame,
     switchTurn,
+    determineCurrentWinner,
     get currentPlayer() {
       return getCurrentPlayer();
     },

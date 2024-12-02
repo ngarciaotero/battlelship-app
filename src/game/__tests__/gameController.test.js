@@ -169,4 +169,30 @@ describe("Game Controller", () => {
       expect(gameController.switchTurn().success).toBe(false);
     });
   });
+
+  describe("Winning conditions", () => {
+    beforeEach(() => {
+      gameController.addPlayers([player1, player2]);
+      gameController.initializeGame();
+    });
+
+    test("should not return winner before 33 turns", () => {
+      for (let i = 0; i < 32; i++) {
+        gameController.switchTurn();
+      }
+
+      const winner = gameController.determineCurrentWinner();
+      expect(winner).toBeNull();
+    });
+
+    test("should return winner after 33 turns", () => {
+      for (let i = 0; i < 33; i++) {
+        gameController.switchTurn();
+      }
+
+      player1.isDefeated.mockReturnValue(true);
+      const winner = gameController.determineCurrentWinner();
+      expect(winner).toEqual({ winner: player2, loser: player1 });
+    });
+  });
 });

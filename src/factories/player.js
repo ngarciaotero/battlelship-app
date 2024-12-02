@@ -53,6 +53,10 @@ export function createPlayer(playerType) {
     return gameboard.placedShips;
   }
 
+  function isDefeated() {
+    return gameboard.allShipsSunk();
+  }
+
   return {
     get type() {
       return getType();
@@ -65,5 +69,6 @@ export function createPlayer(playerType) {
     },
     resetShipConfig,
     placedShipCount,
+    isDefeated,
   };
 }

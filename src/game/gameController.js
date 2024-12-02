@@ -51,6 +51,14 @@ export function createGameController() {
     return null;
   }
 
+  function getOpponentPlayer(currentIndex = currentPlayerIndex) {
+    if (activePlayers.length === MAX_PLAYERS) {
+      const opponentIndex = currentIndex === 0 ? 1 : 0;
+      return activePlayers[opponentIndex];
+    }
+    return null;
+  }
+
   function isValidGameState() {
     return (
       activePlayers.length === MAX_PLAYERS && gameStatus === GAME_STATUS.ACTIVE

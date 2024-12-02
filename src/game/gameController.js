@@ -63,5 +63,8 @@ export function createGameController() {
     get currentPlayer() {
       return getCurrentPlayer();
     },
+    get gameStatus() {
+      return gameStatus;
+    },
   };
 }

@@ -56,6 +56,9 @@ export function createPlayer(playerType) {
     get gameboard() {
       return getGameboard();
     },
+    get isPlayerObject() {
+      return true;
+    },
     resetShipConfig,
   };
 }

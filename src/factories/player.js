@@ -57,6 +57,14 @@ export function createPlayer(playerType) {
     return gameboard.allShipsSunk();
   }
 
+  function resetGameboard() {
+    if (type === PLAYER_TYPE.COMPUTER) {
+      gameboard.resetGameboard();
+      gameboard.populateRandomly();
+    }
+    gameboard.resetGameboard();
+  }
+
   return {
     get type() {
       return getType();
@@ -70,5 +78,6 @@ export function createPlayer(playerType) {
     resetShipConfig,
     placedShipCount,
     isDefeated,
+    resetGameboard,
   };
 }

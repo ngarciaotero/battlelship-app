@@ -113,4 +113,29 @@ describe("Game Controller", () => {
       expect(endGameAgain.success).toBe(false);
     });
   });
+
+  describe("Reset Game", () => {
+    beforeEach(() => {
+      gameController.addPlayers([player1, player2]);
+      gameController.initializeGame();
+    });
+
+    test("should successfully reset an in progress game", () => {
+      const resetGameResult = gameController.resetGame();
+      expect(resetGameResult.success).toBe(true);
+      expect(gameController.gameStatus).toBe("inactive");
+    });
+
+    test("should fail to reset an already inactive game", () => {
+      gameController.endGame();
+      const resetGameResult = gameController.resetGame();
+      expect(resetGameResult.success).toBe(false);
+    });
+
+    test("should call resetGameboard on both players", () => {
+      gameController.resetGame();
+      expect(player1.resetGameboard).toHaveBeenCalledTimes(1);
+      expect(player2.resetGameboard).toHaveBeenCalledTimes(1);
+    });
+  });
 });

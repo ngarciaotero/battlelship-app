@@ -67,10 +67,22 @@ export function createGameController() {
     return { success: true };
   }
 
+  function resetGame() {
+    if (gameStatus === GAME_STATUS.INACTIVE) return { success: false };
+
+    activePlayers.forEach((player) => player.resetGameboard());
+
+    gameStatus = GAME_STATUS.INACTIVE;
+    currentPlayerIndex = -1;
+
+    return { success: true };
+  }
+
   return {
     addPlayers,
     initializeGame,
     endGame,
+    resetGame,
     get currentPlayer() {
       return getCurrentPlayer();
     },

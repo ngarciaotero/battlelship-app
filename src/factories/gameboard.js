@@ -220,6 +220,10 @@ export function createGameboard() {
     }
   }
 
+  function getPlacedShips() {
+    return placedShips;
+  }
+
   return {
     getShipAt,
     placeShip,
@@ -234,5 +238,8 @@ export function createGameboard() {
     resetBoard,
     populateRandomly,
     resetGameboard,
+    get placedShips() {
+      return getPlacedShips();
+    },
   };
 }

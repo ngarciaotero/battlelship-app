@@ -203,4 +203,16 @@ describe("Gameboard", () => {
       expect(gameboard.missedAttacks.length).toBe(0);
     });
   });
+
+  describe("placed ships status", () => {
+    test("should return placed ships", () => {
+      gameboard.placeShip(ship3, { x: 0, y: 0 }, "horizontal");
+      gameboard.placeShip(ship2, { x: 0, y: 2 }, "vertical");
+
+      const placedShips = gameboard.placedShips;
+      expect(placedShips.size).toBe(2);
+      expect(placedShips).toContain(ship3);
+      expect(placedShips).toContain(ship2);
+    });
+  });
 });

@@ -12,7 +12,7 @@ const HIT_POSITION = 1;
 export function createGameboard() {
   let board = createEmptyBoard();
   let missedAttacksList = [];
-  let placedShips = new Set();
+  let placedShips = new Map();
 
   function isPositionWithinBounds(position) {
     return (
@@ -85,13 +85,6 @@ export function createGameboard() {
     return position1.x === position2.x && position1.y === position2.y;
   }
 
-  function arePositionsEmpty(positions) {
-    return positions.every(
-      (pos) =>
-        isPositionWithinBounds(pos) && board[pos.x][pos.y] === EMPTY_POSITION
-    );
-  }
-
   function placeShipAtPositions(positions, ship) {
     positions.forEach((pos) => {
       setPositionValue(pos, ship);
@@ -104,26 +97,51 @@ export function createGameboard() {
     });
   }
 
-  function placeShip(ship, startPos, orientation) {
+  function validateShipPlacement(startPos, ship, orientation) {
     if (
       !isPositionWithinBounds(startPos) ||
       !isShipInBounds(startPos, ship.length, orientation)
     )
       return false;
+    return true;
+  }
+
+  function shipOverlapExists(shipPositions) {
+    for (const shipData of placedShips.values()) {
+      const conflictingShipPositions = [
+        ...shipData.shipPositions,
+        ...shipData.surroundingPositions,
+      ];
+
+      const hasOverlap = shipPositions.some((newPos) =>
+        conflictingShipPositions.some((existingPos) =>
+          isSamePosition(newPos, existingPos)
+        )
+      );
+
+      if (hasOverlap) return true;
+    }
+    return false;
+  }
+
+  function placeShip(ship, startPos, orientation) {
+    if (!validateShipPlacement(startPos, ship, orientation)) return false;
 
     const shipPositions = getShipPositions(startPos, ship.length, orientation);
-    if (!arePositionsEmpty(shipPositions)) return false;
 
-    const surroundingPositions = getSurroundingPositions(
-      startPos,
-      ship.length,
-      orientation,
-      shipPositions
-    );
+    if (shipOverlapExists(shipPositions)) return false;
 
     placeShipAtPositions(shipPositions, ship);
-    lockPositions(surroundingPositions);
-    placedShips.add(ship);
+
+    placedShips.set(ship, {
+      shipPositions,
+      surroundingPositions: getSurroundingPositions(
+        startPos,
+        ship.length,
+        orientation,
+        shipPositions
+      ),
+    });
 
     return true;
   }
@@ -178,7 +196,7 @@ export function createGameboard() {
   function allShipsSunk() {
     return (
       placedShips.size > 0 &&
-      Array.from(placedShips).every((ship) => ship.isSunk())
+      Array.from(placedShips.keys()).every((ship) => ship.isSunk())
     );
   }
 
@@ -194,13 +212,13 @@ export function createGameboard() {
 
   function resetBoard() {
     board = createEmptyBoard();
-    placedShips = new Set();
+    placedShips = new Map();
   }
 
   function resetGameboard() {
     board = createEmptyBoard();
     missedAttacksList = [];
-    placedShips = new Set();
+    placedShips = new Map();
   }
 
   function populateRandomly() {

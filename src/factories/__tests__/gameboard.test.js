@@ -211,8 +211,8 @@ describe("Gameboard", () => {
 
       const placedShips = gameboard.placedShips;
       expect(placedShips.size).toBe(2);
-      expect(placedShips).toContain(ship3);
-      expect(placedShips).toContain(ship2);
+      expect(Array.from(placedShips.keys())).toContain(ship3);
+      expect(Array.from(placedShips.keys())).toContain(ship2);
     });
   });
 });

@@ -50,7 +50,7 @@ export function createPlayer(playerType) {
   }
 
   function placedShipCount() {
-    return gameboard.placedShips;
+    return gameboard.placedShips.size;
   }
 
   function isDefeated() {

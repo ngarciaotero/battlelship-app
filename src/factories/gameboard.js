@@ -151,16 +151,9 @@ export function createGameboard() {
   }
 
   function receiveAttack(position) {
-    if (!isValidAttackPosition(position)) return false;
+    if (!isPositionWithinBounds(position)) return { status: "invalid" };
 
     return handleAttackResult(position);
-  }
-
-  function isValidAttackPosition(position) {
-    if (!isPositionWithinBounds(position)) return false;
-
-    const currentValue = getShipAt(position);
-    return currentValue !== HIT_POSITION && currentValue !== MISSED_POSITION;
   }
 
   function recordMissedAttack(position) {
@@ -174,15 +167,21 @@ export function createGameboard() {
   }
 
   function handleAttackResult(position) {
-    const targetShip = getShipAt(position);
+    const currentValue = getShipAt(position);
 
-    if (targetShip === EMPTY_POSITION || targetShip === LOCKED_POSITION) {
+    if (
+      currentValue === HIT_POSITION ||
+      currentValue === MISSED_POSITION ||
+      currentValue === LOCKED_POSITION
+    ) {
+      return { status: "invalid" };
+    } else if (currentValue === EMPTY_POSITION) {
       recordMissedAttack(position);
-    } else {
-      recordHit(position, targetShip);
+      return { status: "miss" };
     }
 
-    return true;
+    recordHit(position, currentValue);
+    return { status: "hit" };
   }
 
   function getMissedAttacks() {

@@ -78,7 +78,7 @@ describe("Gameboard", () => {
 
     test("should record a hit on a ship", () => {
       const attack = gameboard.receiveAttack({ x: 0, y: 0 });
-      expect(attack).toBe(true);
+      expect(attack.status).toBe("hit");
     });
 
     test("should record a missed attack and track its coordinates", () => {
@@ -95,14 +95,14 @@ describe("Gameboard", () => {
       gameboard.receiveAttack({ x: 0, y: 0 });
       const repeatAttack = gameboard.receiveAttack({ x: 0, y: 0 });
 
-      expect(repeatAttack).toBe(false);
+      expect(repeatAttack.status).toBe("invalid");
     });
 
     test("should reject attacks outside board boundaries", () => {
-      expect(gameboard.receiveAttack({ x: -1, y: 0 })).toBe(false);
-      expect(gameboard.receiveAttack({ x: 11, y: 0 })).toBe(false);
-      expect(gameboard.receiveAttack({ x: 0, y: -11 })).toBe(false);
-      expect(gameboard.receiveAttack({ x: 0, y: 11 })).toBe(false);
+      expect(gameboard.receiveAttack({ x: -1, y: 0 }).status).toBe("invalid");
+      expect(gameboard.receiveAttack({ x: 11, y: 0 }).status).toBe("invalid");
+      expect(gameboard.receiveAttack({ x: 0, y: -11 }).status).toBe("invalid");
+      expect(gameboard.receiveAttack({ x: 0, y: 11 }).status).toBe("invalid");
     });
   });
 

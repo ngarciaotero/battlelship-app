@@ -245,16 +245,16 @@ export function createGameboard() {
     getShipAt,
     placeShip,
     receiveAttack,
-    get missedAttacks() {
-      return getMissedAttacks();
-    },
     allShipsSunk,
-    get board() {
-      return getBoard();
-    },
     resetBoard,
     populateRandomly,
     resetGameboard,
+    get missedAttacks() {
+      return getMissedAttacks();
+    },
+    get board() {
+      return getBoard();
+    },
     get placedShips() {
       return getPlacedShips();
     },

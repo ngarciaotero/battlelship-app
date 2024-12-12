@@ -195,4 +195,63 @@ describe("Game Controller", () => {
       expect(winner).toBeNull();
     });
   });
+
+  describe("Move management", () => {
+    let mockMove;
+    let moveResult;
+    beforeEach(() => {
+      mockMove = { x: 1, y: 1 };
+      gameController.addPlayers([player1, player2]);
+      gameController.initializeGame();
+    });
+
+    test("should successfully make a hit move", () => {
+      player2.gameboard.receiveAttack.mockReturnValue({ status: "hit" });
+      moveResult = gameController.makeMove(mockMove);
+
+      expect(moveResult).toEqual({ success: true, type: "hit" });
+    });
+
+    test("should successfully make a miss move", () => {
+      player2.gameboard.receiveAttack.mockReturnValue({ status: "miss" });
+      moveResult = gameController.makeMove(mockMove);
+
+      expect(moveResult).toEqual({ success: true, type: "miss" });
+    });
+
+    test("should prevent moves when game is not active", () => {
+      gameController.endGame();
+      moveResult = gameController.makeMove(mockMove);
+
+      expect(moveResult).toEqual({ success: false, type: "error" });
+    });
+
+    test("should prevent invalid moves", () => {
+      player2.gameboard.receiveAttack.mockReturnValue({ status: "invalid" });
+      moveResult = gameController.makeMove(mockMove);
+
+      expect(moveResult).toEqual({ success: false, type: "invalid" });
+    });
+
+    test("should detect and return win condition", () => {
+      player2.gameboard.receiveAttack.mockReturnValue({ status: "hit" });
+      player2.isDefeated.mockReturnValue(true);
+
+      moveResult = gameController.makeMove(mockMove);
+
+      expect(moveResult).toEqual({
+        success: true,
+        type: "win",
+        winner: player1,
+        loser: player2,
+      });
+    });
+
+    test("should prevent move on already attacked coordinate", () => {
+      player2.gameboard.receiveAttack.mockReturnValue({ status: "invalid" });
+      moveResult = gameController.makeMove(mockMove);
+
+      expect(moveResult).toEqual({ success: false, type: "invalid" });
+    });
+  });
 });

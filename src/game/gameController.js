@@ -109,6 +109,49 @@ export function createGameController() {
     return null;
   }
 
+  function makeMove(move) {
+    if (!isValidGameState()) return { success: false, type: "error" };
+
+    const attackOutcome = performAttack(move);
+
+    return handleMoveOutcome(attackOutcome);
+  }
+
+  function performAttack(move) {
+    const opponentPlayer = getOpponentPlayer();
+
+    if (!opponentPlayer) {
+      throw new Error("No opponent player available");
+    }
+
+    const attackResult = opponentPlayer.gameboard.receiveAttack(move);
+
+    return { attackResult, winnerResult: determineWinner() };
+  }
+
+  function handleMoveOutcome({ attackResult, winnerResult }) {
+    if (attackResult.status === "miss") {
+      switchTurn();
+      return {
+        success: true,
+        type: attackResult.status,
+      };
+    }
+
+    if (attackResult.status === "hit") {
+      if (winnerResult) {
+        return {
+          success: true,
+          type: "win",
+          winner: winnerResult.winner,
+          loser: winnerResult.loser,
+        };
+      }
+      return { success: true, type: attackResult.status };
+    }
+    return { success: false, type: "invalid" };
+  }
+
   return {
     addPlayers,
     initializeGame,
@@ -116,6 +159,7 @@ export function createGameController() {
     resetGame,
     switchTurn,
     determineWinner,
+    makeMove,
     get currentPlayer() {
       return getCurrentPlayer();
     },

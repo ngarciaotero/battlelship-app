@@ -8,6 +8,7 @@ jest.mock("../../factories/player.js", () => ({
     placedShipCount: jest.fn().mockReturnValue(5),
     isDefeated: jest.fn().mockReturnValue(false),
     resetGameboard: jest.fn(),
+    gameboard: { receiveAttack: jest.fn() },
   })),
 }));
 
@@ -176,23 +177,22 @@ describe("Game Controller", () => {
       gameController.initializeGame();
     });
 
-    test("should not return winner before 33 turns", () => {
-      for (let i = 0; i < 32; i++) {
-        gameController.switchTurn();
-      }
+    test("should return winner and loser when a player is defeated", () => {
+      player1.isDefeated.mockReturnValue(true);
 
-      const winner = gameController.determineCurrentWinner();
+      const winner = gameController.determineWinner();
+      expect(winner).toEqual({ winner: player2, loser: player1 });
+    });
+
+    test("should return null when no player is defeated", () => {
+      const winner = gameController.determineWinner();
       expect(winner).toBeNull();
     });
 
-    test("should return winner after 33 turns", () => {
-      for (let i = 0; i < 33; i++) {
-        gameController.switchTurn();
-      }
-
-      player1.isDefeated.mockReturnValue(true);
-      const winner = gameController.determineCurrentWinner();
-      expect(winner).toEqual({ winner: player2, loser: player1 });
+    test("should return null when game is invalid", () => {
+      gameController.endGame();
+      const winner = gameController.determineWinner();
+      expect(winner).toBeNull();
     });
   });
 });

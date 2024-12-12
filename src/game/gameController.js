@@ -94,14 +94,19 @@ export function createGameController() {
     return { success: true };
   }
 
-  function determineCurrentWinner() {
-
+  function determineWinner() {
+    const currentPlayer = getCurrentPlayer();
     const opponentPlayer = getOpponentPlayer();
-    if (!opponentPlayer) return null;
 
-    return opponentPlayer.isDefeated()
-      ? { winner: getCurrentPlayer(), loser: opponentPlayer }
-      : null;
+    if (!currentPlayer || !opponentPlayer) return null;
+
+    if (currentPlayer.isDefeated()) {
+      return { winner: opponentPlayer, loser: currentPlayer };
+    } else if (opponentPlayer.isDefeated()) {
+      return { winner: currentPlayer, loser: opponentPlayer };
+    }
+
+    return null;
   }
 
   return {
@@ -110,7 +115,7 @@ export function createGameController() {
     endGame,
     resetGame,
     switchTurn,
-    determineCurrentWinner,
+    determineWinner,
     get currentPlayer() {
       return getCurrentPlayer();
     },

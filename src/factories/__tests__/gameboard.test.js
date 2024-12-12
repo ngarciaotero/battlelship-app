@@ -215,4 +215,43 @@ describe("Gameboard", () => {
       expect(Array.from(placedShips.keys())).toContain(ship2);
     });
   });
+
+  describe("ship surrounding lock", () => {
+    let lockedPositions;
+    beforeEach(() => {
+      gameboard.placeShip(ship2, { x: 0, y: 0 }, "horizontal");
+      lockedPositions = [
+        { x: 0, y: 1 },
+        { x: 1, y: 1 },
+        { x: 2, y: 1 },
+        { x: 2, y: 0 },
+      ];
+    });
+
+    test("should lock surrounding empty positions when a ship is sunk", () => {
+      gameboard.receiveAttack({ x: 0, y: 0 });
+      gameboard.receiveAttack({ x: 1, y: 1 });
+      gameboard.receiveAttack({ x: 1, y: 0 });
+
+      expect(ship2.isSunk()).toBe(true);
+
+      lockedPositions.forEach((pos) => {
+        if (pos.x === 1 && pos.y === 1) {
+          expect(gameboard.getShipAt(pos)).toBe(-1);
+        } else {
+          expect(gameboard.getShipAt(pos)).toBe(0);
+        }
+      });
+    });
+
+    test("should not lock surrounding positions if the ship is not sunk", () => {
+      gameboard.receiveAttack({ x: 0, y: 0 });
+
+      expect(ship3.isSunk()).toBe(false);
+
+      lockedPositions.forEach((pos) => {
+        expect(gameboard.getShipAt(pos)).toBeNull();
+      });
+    });
+  });
 });

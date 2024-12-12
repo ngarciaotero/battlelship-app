@@ -1,12 +1,10 @@
 const GAME_STATUS = Object.freeze({ ACTIVE: "active", INACTIVE: "inactive" });
 const MAX_PLAYERS = 2;
-const MIN_TURNS_FOR_WIN = 33;
 
 export function createGameController() {
   let activePlayers = [];
   let gameStatus = GAME_STATUS.INACTIVE;
   let currentPlayerIndex = -1;
-  let turnCount = 0;
 
   function addPlayers(players) {
     if (gameStatus === GAME_STATUS.ACTIVE)
@@ -73,7 +71,6 @@ export function createGameController() {
     activePlayers = [];
     gameStatus = GAME_STATUS.INACTIVE;
     currentPlayerIndex = -1;
-    turnCount = 0;
 
     return { success: true };
   }
@@ -85,7 +82,6 @@ export function createGameController() {
 
     gameStatus = GAME_STATUS.INACTIVE;
     currentPlayerIndex = -1;
-    turnCount = 0;
 
     return { success: true };
   }
@@ -94,13 +90,11 @@ export function createGameController() {
     if (gameStatus === GAME_STATUS.INACTIVE)
       return { success: false, error: "No game in progress." };
 
-    turnCount++;
     currentPlayerIndex = currentPlayerIndex === 0 ? 1 : 0;
     return { success: true };
   }
 
   function determineCurrentWinner() {
-    if (turnCount < MIN_TURNS_FOR_WIN) return null;
 
     const opponentPlayer = getOpponentPlayer();
     if (!opponentPlayer) return null;

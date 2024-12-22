@@ -12,10 +12,12 @@ describe("Player", () => {
   describe("player type initialization", () => {
     test("should create a real player type", () => {
       expect(realPlayer.type).toBe("real");
+      expect(realPlayer.isComputer()).toBe(false);
     });
 
     test("should create a computer player type", () => {
       expect(computerPlayer.type).toBe("computer");
+      expect(computerPlayer.isComputer()).toBe(true);
     });
 
     test("should throw error if type is not 'real' or 'computer'", () => {

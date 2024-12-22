@@ -65,6 +65,10 @@ export function createPlayer(playerType) {
     gameboard.resetGameboard();
   }
 
+  function isComputer() {
+    return type === PLAYER_TYPE.COMPUTER;
+  }
+
   return {
     get type() {
       return getType();
@@ -79,5 +83,6 @@ export function createPlayer(playerType) {
     placedShipCount,
     isDefeated,
     resetGameboard,
+    isComputer,
   };
 }

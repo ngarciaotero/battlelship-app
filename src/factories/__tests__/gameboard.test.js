@@ -254,4 +254,47 @@ describe("Gameboard", () => {
       });
     });
   });
+
+  describe("successful attacks tracking", () => {
+    beforeEach(() => {
+      gameboard.resetGameboard();
+      gameboard.placeShip(ship3, { x: 0, y: 0 }, "horizontal");
+    });
+
+    test("should record successful attacks", () => {
+      gameboard.receiveAttack({ x: 0, y: 0 });
+      gameboard.receiveAttack({ x: 1, y: 0 });
+
+      const successfulAttacks = gameboard.successfulAttacks;
+      expect(successfulAttacks).toHaveLength(2);
+      expect(successfulAttacks).toContainEqual({ x: 0, y: 0 });
+      expect(successfulAttacks).toContainEqual({ x: 1, y: 0 });
+    });
+
+    test("should not include missed attacks in successful attacks list", () => {
+      gameboard.receiveAttack({ x: 0, y: 0 });
+      gameboard.receiveAttack({ x: 5, y: 5 });
+
+      const successfulAttacks = gameboard.successfulAttacks;
+      expect(successfulAttacks).toHaveLength(1);
+      expect(successfulAttacks).toContainEqual({ x: 0, y: 0 });
+      expect(successfulAttacks).not.toContainEqual({ x: 5, y: 5 });
+    });
+
+    test("should return a copy of successful attacks array", () => {
+      gameboard.receiveAttack({ x: 0, y: 0 });
+      const successfulAttacks1 = gameboard.successfulAttacks;
+      const successfulAttacks2 = gameboard.successfulAttacks;
+
+      expect(successfulAttacks1).not.toBe(successfulAttacks2);
+      expect(successfulAttacks1).toEqual(successfulAttacks2);
+    });
+
+    test("should clear successful attacks when board is reset", () => {
+      gameboard.receiveAttack({ x: 0, y: 0 });
+      gameboard.resetGameboard();
+
+      expect(gameboard.successfulAttacks).toHaveLength(0);
+    });
+  });
 });

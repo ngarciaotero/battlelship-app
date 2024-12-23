@@ -297,4 +297,25 @@ describe("Gameboard", () => {
       expect(gameboard.successfulAttacks).toHaveLength(0);
     });
   });
+
+  describe("ship orientation retrieval", () => {
+    beforeEach(() => {
+      gameboard.resetGameboard();
+    });
+
+    test("should return horizontal orientation for horizontally placed ship", () => {
+      gameboard.placeShip(ship3, { x: 0, y: 0 }, "horizontal");
+      expect(gameboard.getShipOrientation(ship3)).toBe("horizontal");
+    });
+
+    test("should return vertical orientation for vertically placed ship", () => {
+      gameboard.placeShip(ship3, { x: 0, y: 0 }, "vertical");
+      expect(gameboard.getShipOrientation(ship3)).toBe("vertical");
+    });
+
+    test("should return null for ship that hasn't been placed", () => {
+      const unplacedShip = createShip(2);
+      expect(gameboard.getShipOrientation(unplacedShip)).toBeNull();
+    });
+  });
 });

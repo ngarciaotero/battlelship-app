@@ -138,6 +138,7 @@ export function createGameboard() {
 
     placedShips.set(ship, {
       shipPositions,
+      shipOrientation: orientation,
       surroundingPositions: getSurroundingPositions(
         startPos,
         ship.length,
@@ -263,6 +264,13 @@ export function createGameboard() {
     return placedShips;
   }
 
+  function getShipOrientation(ship) {
+    const shipData = placedShips.get(ship);
+    if (!shipData) return null;
+
+    return shipData.shipOrientation;
+  }
+
   return {
     getShipAt,
     placeShip,
@@ -271,6 +279,7 @@ export function createGameboard() {
     resetBoard,
     populateRandomly,
     resetGameboard,
+    getShipOrientation,
     get missedAttacks() {
       return getMissedAttacks();
     },

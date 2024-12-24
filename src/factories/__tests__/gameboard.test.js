@@ -318,4 +318,41 @@ describe("Gameboard", () => {
       expect(gameboard.getShipOrientation(unplacedShip)).toBeNull();
     });
   });
+
+  describe("available positions", () => {
+    beforeEach(() => {
+      gameboard.resetGameboard();
+    });
+
+    test("should return all positions on empty board", () => {
+      const positions = gameboard.getAllAvailablePositions();
+      expect(positions.length).toBe(100);
+      expect(positions).toContainEqual({ x: 0, y: 0 });
+      expect(positions).toContainEqual({ x: 9, y: 9 });
+    });
+
+    test("should not include positions that are locked positions", () => {
+      gameboard.placeShip(ship2, { x: 0, y: 0 }, "horizontal");
+      gameboard.receiveAttack({ x: 0, y: 0 });
+      gameboard.receiveAttack({ x: 1, y: 0 });
+
+      const positions = gameboard.getAllAvailablePositions();
+      expect(positions).not.toContainEqual({ x: 0, y: 1 });
+    });
+
+    test("should not include positions with missed attacks", () => {
+      gameboard.receiveAttack({ x: 5, y: 5 });
+      const positions = gameboard.getAllAvailablePositions();
+
+      expect(positions).not.toContainEqual({ x: 5, y: 5 });
+    });
+
+    test("should not include positions with successful attacks", () => {
+      gameboard.placeShip(ship3, { x: 0, y: 0 }, "horizontal");
+      gameboard.receiveAttack({ x: 0, y: 0 });
+      const positions = gameboard.getAllAvailablePositions();
+
+      expect(positions).not.toContainEqual({ x: 0, y: 0 });
+    });
+  });
 });

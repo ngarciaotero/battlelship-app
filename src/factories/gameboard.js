@@ -271,6 +271,18 @@ export function createGameboard() {
     return shipData.shipOrientation;
   }
 
+  function getAllAvailablePositions() {
+    const availablePositions = [];
+    board.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (typeof cell === "object") {
+          availablePositions.push({ x, y });
+        }
+      });
+    });
+    return availablePositions;
+  }
+
   return {
     getShipAt,
     placeShip,
@@ -280,6 +292,7 @@ export function createGameboard() {
     populateRandomly,
     resetGameboard,
     getShipOrientation,
+    getAllAvailablePositions,
     get missedAttacks() {
       return getMissedAttacks();
     },

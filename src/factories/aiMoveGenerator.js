@@ -35,7 +35,7 @@ export function createMoveGenerator(gameboard) {
   function handlePartiallyDamagedShips() {
     if (partiallyDamagedShips.size === 0) return null;
 
-    for (const [ship, data] of partiallyDamagedShips.entries()) {
+    for (const ship of partiallyDamagedShips.entries()) {
       if (ship.isSunk()) {
         partiallyDamagedShips.delete(ship);
         continue;

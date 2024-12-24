@@ -14,23 +14,25 @@ jest.mock("../../factories/player.js", () => ({
 
 describe("Game Controller", () => {
   let gameController;
-  let player1;
-  let player2;
+  let realPlayer;
+  let computerPlayer;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    player1 = createPlayer("real");
-    player2 = createPlayer("computer");
+    realPlayer = createPlayer("real");
+    computerPlayer = createPlayer("computer");
     gameController = createGameController();
   });
 
   describe("Add Players", () => {
     test("should successfully add two valid player objects", () => {
-      expect(gameController.addPlayers([player1, player2]).success).toBe(true);
+      expect(
+        gameController.addPlayers([realPlayer, computerPlayer]).success
+      ).toBe(true);
     });
 
     test("should fail if two new players are added to an in progress game", () => {
-      gameController.addPlayers([player1, player2]);
+      gameController.addPlayers([realPlayer, computerPlayer]);
       gameController.initializeGame();
 
       const secondPlayerAdd = gameController.addPlayers([
@@ -42,20 +44,20 @@ describe("Game Controller", () => {
     });
 
     test("should fail if not exactly two players are added", () => {
-      expect(gameController.addPlayers([player1]).success).toBe(false);
+      expect(gameController.addPlayers([realPlayer]).success).toBe(false);
     });
 
     test("should fail if invalid player objects are provided", () => {
       const invalidPlayer = { type: false };
-      expect(gameController.addPlayers([player1, invalidPlayer]).success).toBe(
-        false
-      );
+      expect(
+        gameController.addPlayers([realPlayer, invalidPlayer]).success
+      ).toBe(false);
     });
   });
 
   describe("Game initialization", () => {
     test("should successfully initialize game with two players", () => {
-      gameController.addPlayers([player1, player2]);
+      gameController.addPlayers([realPlayer, computerPlayer]);
 
       const gameInitialization = gameController.initializeGame();
       expect(gameInitialization.success).toBe(true);
@@ -67,15 +69,15 @@ describe("Game Controller", () => {
     });
 
     test("should fail to initialize game if player boards are not fully populated", () => {
-      player1.placedShipCount.mockReturnValue(0);
+      realPlayer.placedShipCount.mockReturnValue(0);
 
-      gameController.addPlayers([player1, player2]);
+      gameController.addPlayers([realPlayer, computerPlayer]);
       const gameInitialization = gameController.initializeGame();
       expect(gameInitialization.success).toBe(false);
     });
 
     test("should fail to initialize a in progress game", () => {
-      gameController.addPlayers([player1, player2]);
+      gameController.addPlayers([realPlayer, computerPlayer]);
       gameController.initializeGame();
 
       const secondInitialization = gameController.initializeGame();
@@ -85,10 +87,10 @@ describe("Game Controller", () => {
 
   describe("Get current and opponent player", () => {
     test("should return current player when game is active", () => {
-      gameController.addPlayers([player1, player2]);
+      gameController.addPlayers([realPlayer, computerPlayer]);
       gameController.initializeGame();
 
-      expect(gameController.currentPlayer).toBe(player1);
+      expect(gameController.currentPlayer).toBe(realPlayer);
     });
 
     test("should return null if no current player exists", () => {
@@ -96,10 +98,10 @@ describe("Game Controller", () => {
     });
 
     test("should return opponent player when game is active", () => {
-      gameController.addPlayers([player1, player2]);
+      gameController.addPlayers([realPlayer, computerPlayer]);
       gameController.initializeGame();
 
-      expect(gameController.opponentPlayer).toBe(player2);
+      expect(gameController.opponentPlayer).toBe(computerPlayer);
     });
 
     test("should return null if no opponent player exists", () => {
@@ -109,7 +111,7 @@ describe("Game Controller", () => {
 
   describe("End game", () => {
     beforeEach(() => {
-      gameController.addPlayers([player1, player2]);
+      gameController.addPlayers([realPlayer, computerPlayer]);
       gameController.initializeGame();
     });
 
@@ -128,7 +130,7 @@ describe("Game Controller", () => {
 
   describe("Reset Game", () => {
     beforeEach(() => {
-      gameController.addPlayers([player1, player2]);
+      gameController.addPlayers([realPlayer, computerPlayer]);
       gameController.initializeGame();
     });
 
@@ -146,14 +148,14 @@ describe("Game Controller", () => {
 
     test("should call resetGameboard on both players", () => {
       gameController.resetGame();
-      expect(player1.resetGameboard).toHaveBeenCalledTimes(1);
-      expect(player2.resetGameboard).toHaveBeenCalledTimes(1);
+      expect(realPlayer.resetGameboard).toHaveBeenCalledTimes(1);
+      expect(computerPlayer.resetGameboard).toHaveBeenCalledTimes(1);
     });
   });
 
   describe("Turn management", () => {
     beforeEach(() => {
-      gameController.addPlayers([player1, player2]);
+      gameController.addPlayers([realPlayer, computerPlayer]);
       gameController.initializeGame();
     });
 
@@ -173,15 +175,15 @@ describe("Game Controller", () => {
 
   describe("Winning conditions", () => {
     beforeEach(() => {
-      gameController.addPlayers([player1, player2]);
+      gameController.addPlayers([realPlayer, computerPlayer]);
       gameController.initializeGame();
     });
 
     test("should return winner and loser when a player is defeated", () => {
-      player1.isDefeated.mockReturnValue(true);
+      realPlayer.isDefeated.mockReturnValue(true);
 
       const winner = gameController.determineWinner();
-      expect(winner).toEqual({ winner: player2, loser: player1 });
+      expect(winner).toEqual({ winner: computerPlayer, loser: realPlayer });
     });
 
     test("should return null when no player is defeated", () => {
@@ -201,19 +203,21 @@ describe("Game Controller", () => {
     let moveResult;
     beforeEach(() => {
       mockMove = { x: 1, y: 1 };
-      gameController.addPlayers([player1, player2]);
+      gameController.addPlayers([realPlayer, computerPlayer]);
       gameController.initializeGame();
     });
 
     test("should successfully make a hit move", () => {
-      player2.gameboard.receiveAttack.mockReturnValue({ status: "hit" });
+      computerPlayer.gameboard.receiveAttack.mockReturnValue({ status: "hit" });
       moveResult = gameController.makeMove(mockMove);
 
       expect(moveResult).toEqual({ success: true, type: "hit" });
     });
 
     test("should successfully make a miss move", () => {
-      player2.gameboard.receiveAttack.mockReturnValue({ status: "miss" });
+      computerPlayer.gameboard.receiveAttack.mockReturnValue({
+        status: "miss",
+      });
       moveResult = gameController.makeMove(mockMove);
 
       expect(moveResult).toEqual({ success: true, type: "miss" });
@@ -227,28 +231,32 @@ describe("Game Controller", () => {
     });
 
     test("should prevent invalid moves", () => {
-      player2.gameboard.receiveAttack.mockReturnValue({ status: "invalid" });
+      computerPlayer.gameboard.receiveAttack.mockReturnValue({
+        status: "invalid",
+      });
       moveResult = gameController.makeMove(mockMove);
 
       expect(moveResult).toEqual({ success: false, type: "invalid" });
     });
 
     test("should detect and return win condition", () => {
-      player2.gameboard.receiveAttack.mockReturnValue({ status: "hit" });
-      player2.isDefeated.mockReturnValue(true);
+      computerPlayer.gameboard.receiveAttack.mockReturnValue({ status: "hit" });
+      computerPlayer.isDefeated.mockReturnValue(true);
 
       moveResult = gameController.makeMove(mockMove);
 
       expect(moveResult).toEqual({
         success: true,
         type: "win",
-        winner: player1,
-        loser: player2,
+        winner: realPlayer,
+        loser: computerPlayer,
       });
     });
 
     test("should prevent move on already attacked coordinate", () => {
-      player2.gameboard.receiveAttack.mockReturnValue({ status: "invalid" });
+      computerPlayer.gameboard.receiveAttack.mockReturnValue({
+        status: "invalid",
+      });
       moveResult = gameController.makeMove(mockMove);
 
       expect(moveResult).toEqual({ success: false, type: "invalid" });

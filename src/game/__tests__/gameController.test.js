@@ -1,5 +1,6 @@
 const { createGameController } = require("../gameController.js");
 const { createPlayer } = require("../../factories/player.js");
+const { createMoveGenerator } = require("../../factories/aiMoveGenerator.js");
 
 jest.mock("../../factories/player.js", () => ({
   createPlayer: jest.fn().mockImplementation((type) => ({
@@ -9,6 +10,13 @@ jest.mock("../../factories/player.js", () => ({
     isDefeated: jest.fn().mockReturnValue(false),
     resetGameboard: jest.fn(),
     gameboard: { receiveAttack: jest.fn() },
+    isComputer: jest.fn(() => type === "computer"),
+  })),
+}));
+
+jest.mock("../../factories/aiMoveGenerator.js", () => ({
+  createMoveGenerator: jest.fn().mockImplementation(() => ({
+    generateMove: jest.fn().mockReturnValue({ x: 0, y: 0 }),
   })),
 }));
 
@@ -201,8 +209,12 @@ describe("Game Controller", () => {
   describe("Move management", () => {
     let mockMove;
     let moveResult;
+    let moveGenerator;
+
     beforeEach(() => {
       mockMove = { x: 1, y: 1 };
+      moveGenerator = { generateMove: jest.fn() };
+      createMoveGenerator.mockReturnValue(moveGenerator);
       gameController.addPlayers([realPlayer, computerPlayer]);
       gameController.initializeGame();
     });
@@ -231,6 +243,7 @@ describe("Game Controller", () => {
     });
 
     test("should prevent invalid moves", () => {
+      mockMove = { x: -1, y: 10 };
       computerPlayer.gameboard.receiveAttack.mockReturnValue({
         status: "invalid",
       });
@@ -260,6 +273,19 @@ describe("Game Controller", () => {
       moveResult = gameController.makeMove(mockMove);
 
       expect(moveResult).toEqual({ success: false, type: "invalid" });
+    });
+
+    test("should use move generator for computer player turn", () => {
+      gameController.switchTurn();
+      realPlayer.gameboard.receiveAttack.mockReturnValue({
+        status: "hit",
+      });
+      moveResult = gameController.makeMove();
+
+      expect(moveGenerator.generateMove).toHaveBeenCalledTimes(1);
+      expect(moveGenerator.generateMove).toHaveBeenCalledWith(
+        realPlayer.gameboard
+      );
     });
   });
 });

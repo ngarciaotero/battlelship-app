@@ -1,3 +1,5 @@
+import { createMoveGenerator } from "../factories/aiMoveGenerator.js";
+
 const GAME_STATUS = Object.freeze({ ACTIVE: "active", INACTIVE: "inactive" });
 const MAX_PLAYERS = 2;
 
@@ -5,6 +7,7 @@ export function createGameController() {
   let activePlayers = [];
   let gameStatus = GAME_STATUS.INACTIVE;
   let currentPlayerIndex = -1;
+  let moveGenerator;
 
   function addPlayers(players) {
     if (gameStatus === GAME_STATUS.ACTIVE)
@@ -32,6 +35,12 @@ export function createGameController() {
         success: false,
         error: "Players' boards not completely populated.",
       };
+
+    for (const player of activePlayers) {
+      if (player.isComputer()) {
+        moveGenerator = createMoveGenerator();
+      }
+    }
 
     gameStatus = GAME_STATUS.ACTIVE;
     currentPlayerIndex = 0;
@@ -68,6 +77,13 @@ export function createGameController() {
   function endGame() {
     if (gameStatus === GAME_STATUS.INACTIVE) return { success: false };
 
+    for (const player of activePlayers) {
+      if (player.isComputer()) {
+        moveGenerator = null;
+        break;
+      }
+    }
+
     activePlayers = [];
     gameStatus = GAME_STATUS.INACTIVE;
     currentPlayerIndex = -1;
@@ -79,6 +95,13 @@ export function createGameController() {
     if (gameStatus === GAME_STATUS.INACTIVE) return { success: false };
 
     activePlayers.forEach((player) => player.resetGameboard());
+
+    for (const player of activePlayers) {
+      if (player.isComputer()) {
+        moveGenerator = createMoveGenerator();
+        break;
+      }
+    }
 
     gameStatus = GAME_STATUS.INACTIVE;
     currentPlayerIndex = -1;
@@ -109,8 +132,14 @@ export function createGameController() {
     return null;
   }
 
-  function makeMove(move) {
+  function makeMove(move = null) {
     if (!isValidGameState()) return { success: false, type: "error" };
+
+    const currentPlayer = getCurrentPlayer();
+    if (currentPlayer.isComputer() && !move) {
+      const opponentGameboard = getOpponentPlayer().gameboard;
+      move = moveGenerator.generateMove(opponentGameboard);
+    }
 
     const attackOutcome = performAttack(move);
 

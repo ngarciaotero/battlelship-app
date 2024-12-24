@@ -161,7 +161,7 @@ export function createGameboard() {
   }
 
   function recordMissedAttack(position) {
-    missedAttacksList.push({ x: position.x, y: position.y });
+    missedAttacksList.push(position);
     setPositionValue(position, MISSED_POSITION);
   }
 

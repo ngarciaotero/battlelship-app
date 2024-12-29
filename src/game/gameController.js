@@ -53,6 +53,10 @@ export function createGameController() {
     );
   }
 
+  function getAllPlayers() {
+    return activePlayers;
+  }
+
   function getCurrentPlayer() {
     if (isValidGameState()) {
       return activePlayers[currentPlayerIndex];
@@ -189,6 +193,9 @@ export function createGameController() {
     switchTurn,
     determineWinner,
     makeMove,
+    get allPlayers() {
+      return getAllPlayers();
+    },
     get currentPlayer() {
       return getCurrentPlayer();
     },

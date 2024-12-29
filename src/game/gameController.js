@@ -193,6 +193,7 @@ export function createGameController() {
     switchTurn,
     determineWinner,
     makeMove,
+    validatePlayerBoards,
     get allPlayers() {
       return getAllPlayers();
     },

@@ -8,6 +8,8 @@ export const gameStateManager = {
       false,
       `.scoreboard-${suffix}`,
       true,
+      `.board-${suffix}`,
+      true,
       `.player-${suffix}-overlay`,
       false,
       ".game-controls",

@@ -22,6 +22,8 @@ export const placementStateManager = {
       false,
       `.scoreboard-${suffix}`,
       false,
+      `.board-${suffix}`,
+      false,
       `.player-${suffix}-overlay`,
       true
     );
@@ -29,7 +31,11 @@ export const placementStateManager = {
 
   togglePlayerOverlay: (playerNum, show) => {
     const suffix = playerNum === 1 ? "one" : "two";
-    const overlay = document.querySelector(`.player-${suffix}-overlay`);
-    if (overlay) overlay.classList.toggle("hidden", !show);
+    toggleVisibility(
+      `.player-${suffix}-overlay`,
+      true,
+      `.board-${suffix}`,
+      false
+    );
   },
 };

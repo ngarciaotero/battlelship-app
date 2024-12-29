@@ -1,5 +1,6 @@
 import { getGameController } from "./modeSelectionHandler.js";
 import { updateBoardUI } from "../ui/updateBoardUI.js";
+import { updateStartButtonUI } from "../ui/updateStartBtnUI.js";
 
 const getCurrentPlayer = (suffix) => {
   const gameController = getGameController();
@@ -18,6 +19,7 @@ export const handleRandomPopulation = (suffix) => {
   currentPlayer.populateBoard();
 
   updateBoardUI(suffix, currentPlayer.gameboard);
+  updateStartButtonUI();
 };
 
 export const handleClearBoard = (suffix) => {
@@ -26,4 +28,5 @@ export const handleClearBoard = (suffix) => {
 
   currentPlayer.clearBoard();
   updateBoardUI(suffix, currentPlayer.gameboard);
+  updateStartButtonUI();
 };

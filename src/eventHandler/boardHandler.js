@@ -1,13 +1,18 @@
 import { getGameController } from "./modeSelectionHandler.js";
 import { updateBoardUI } from "../ui/updateBoardUI.js";
 
-export const handleRandomPopulation = (suffix) => {
+const getCurrentPlayer = (suffix) => {
   const gameController = getGameController();
-  if (!gameController) return;
+  if (!gameController) return null;
 
   const playerNum = suffix === "one" ? 0 : 1;
   const players = gameController.allPlayers;
-  const currentPlayer = players[playerNum];
+  return players[playerNum];
+};
+
+export const handleRandomPopulation = (suffix) => {
+  const currentPlayer = getCurrentPlayer(suffix);
+  if (!currentPlayer) return;
 
   currentPlayer.clearBoard();
   currentPlayer.populateBoard();
@@ -16,12 +21,8 @@ export const handleRandomPopulation = (suffix) => {
 };
 
 export const handleClearBoard = (suffix) => {
-  const gameController = getGameController();
-  if (!gameController) return;
-
-  const playerNum = suffix === "one" ? 0 : 1;
-  const players = gameController.allPlayers;
-  const currentPlayer = players[playerNum];
+  const currentPlayer = getCurrentPlayer(suffix);
+  if (!currentPlayer) return;
 
   currentPlayer.clearBoard();
   updateBoardUI(suffix, currentPlayer.gameboard);

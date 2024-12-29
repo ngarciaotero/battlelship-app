@@ -1,5 +1,9 @@
 import { createElement } from "./helpers/createElement.js";
 import { createGameboardUI } from "./gameboardUI.js";
+import {
+  handleRandomPopulation,
+  handleClearBoard,
+} from "../eventHandler/boardHandler.js";
 
 export const createPlayerSection = (playerNum) => {
   const suffix = playerNum === 1 ? "one" : "two";
@@ -61,6 +65,8 @@ const createQuickSetup = (suffix) => {
     "Generate Random Board"
   );
 
+  populateBtn.addEventListener("click", () => handleRandomPopulation(suffix));
+
   quickSetup.append(quickSetupTitle, populateBtn);
   return quickSetup;
 };
@@ -81,6 +87,8 @@ const createManualSetup = (suffix) => {
     `unplaced-ships-${suffix}`,
   ]);
   const clearBtn = createElement("button", "clear-board-btn", "Clear Board");
+
+  clearBtn.addEventListener("click", () => handleClearBoard(suffix));
 
   manualSetup.append(
     manualSetupTitle,
@@ -125,7 +133,7 @@ const createOverlay = (suffix) => {
   const overlay = createElement(
     "div",
     ["player-overlay", `player-${suffix}-overlay`, "hidden"],
-    "Waiting for Player to finish ..."
+    "Waiting for opponent to finish ..."
   );
 
   return overlay;

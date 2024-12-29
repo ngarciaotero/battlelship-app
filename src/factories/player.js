@@ -69,6 +69,14 @@ export function createPlayer(playerType) {
     return type === PLAYER_TYPE.COMPUTER;
   }
 
+  function clearBoard() {
+    gameboard.resetBoard();
+  }
+
+  function populateBoard() {
+    gameboard.populateRandomly();
+  }
+
   return {
     get type() {
       return getType();
@@ -84,5 +92,7 @@ export function createPlayer(playerType) {
     isDefeated,
     resetGameboard,
     isComputer,
+    clearBoard,
+    populateBoard,
   };
 }

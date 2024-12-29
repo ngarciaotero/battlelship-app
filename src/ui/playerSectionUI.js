@@ -1,4 +1,5 @@
 import { createElement } from "./helpers/createElement.js";
+import { createGameboardUI } from "./gameboardUI.js";
 
 export const createPlayerSection = (playerNum) => {
   const suffix = playerNum === 1 ? "one" : "two";
@@ -7,6 +8,9 @@ export const createPlayerSection = (playerNum) => {
 
   //   create board
   const board = createElement("div", `board-${suffix}`);
+  const boardGrid = createGameboardUI(suffix);
+
+  board.appendChild(boardGrid);
 
   //   create ship info container
   const shipInfoContainer = createElement("div", [

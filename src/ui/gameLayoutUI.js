@@ -30,6 +30,8 @@ export const createGameLayout = (
     "Start Game"
   );
 
+  startGameButton.disabled = true;
+
   backButton.addEventListener("click", () => {
     onBackClick();
   });

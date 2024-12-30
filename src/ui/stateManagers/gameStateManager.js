@@ -15,6 +15,8 @@ export const gameStateManager = {
       ".game-controls",
       true,
       ".setup-controls",
+      false,
+      ".pass-screen-container",
       false
     );
   },

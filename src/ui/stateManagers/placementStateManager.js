@@ -29,13 +29,27 @@ export const placementStateManager = {
     );
   },
 
-  togglePlayerOverlay: (playerNum, show) => {
+  togglePlayerOverlay: (playerNum) => {
     const suffix = playerNum === 1 ? "one" : "two";
     toggleVisibility(
       `.player-${suffix}-overlay`,
       true,
       `.board-${suffix}`,
       false
+    );
+  },
+
+  setPassScreen: () => {
+    toggleVisibility(`.pass-screen-container`, true);
+  },
+
+  removePlayerOverlay: (playerNum) => {
+    const suffix = playerNum === 1 ? "one" : "two";
+    toggleVisibility(
+      `.player-${suffix}-overlay`,
+      false,
+      `.board-${suffix}`,
+      true
     );
   },
 };

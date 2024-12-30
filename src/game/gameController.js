@@ -97,6 +97,18 @@ export function createGameController() {
     return { success: true };
   }
 
+  function endPreGame() {
+    for (const player of activePlayers) {
+      if (player.isComputer()) {
+        moveGenerator = null;
+        break;
+      }
+    }
+    activePlayers = [];
+    currentPlayerIndex = -1;
+    return { success: true };
+  }
+
   function resetGame() {
     if (gameStatus === GAME_STATUS.INACTIVE) return { success: false };
 
@@ -190,6 +202,7 @@ export function createGameController() {
   return {
     addPlayers,
     initializeGame,
+    endPreGame,
     endGame,
     resetGame,
     switchTurn,

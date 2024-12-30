@@ -23,7 +23,7 @@ export const createGameLayout = (
 
   // create setup controls
   const setupControls = createElement("div", "setup-controls");
-  const backButton = createElement("button", "home-btn", "Go back");
+  const backButton = createElement("button", "back-btn", "Go back");
   const startGameButton = createElement(
     "button",
     "start-game-btn",

@@ -4,6 +4,7 @@ import {
   handleRandomPopulation,
   handleClearBoard,
 } from "../eventHandler/boardHandler.js";
+import { createPassDeviceUI } from "./passDeviceUI.js";
 
 export const createPlayerSection = (playerNum) => {
   const suffix = playerNum === 1 ? "one" : "two";
@@ -125,6 +126,7 @@ const createMessageBoard = (suffix) => {
   ]);
   const message = createElement("h3", `message-${suffix}`);
   messageBoard.appendChild(message);
+  messageBoard.appendChild(createPassDeviceUI());
   return messageBoard;
 };
 

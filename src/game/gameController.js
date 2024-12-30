@@ -48,6 +48,8 @@ export function createGameController() {
   }
 
   function validatePlayerBoards(requiredShipCount = 5) {
+    if (!activePlayers || activePlayers.length === 0) return false;
+
     return activePlayers.every(
       (player) => player.placedShipCount() === requiredShipCount
     );

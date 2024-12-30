@@ -33,7 +33,7 @@ export const handleModeSelect = (mode) => {
 
     placementStateManager.setHumanPlacementMode(1);
     placementStateManager.setComputerPlacementMode(2);
-    placementStateManager.togglePlayerOverlay(2, true);
+    placementStateManager.togglePlayerOverlay(2);
 
     displayToggle.displayGameLayout();
   } else if (mode === MODES.HUMAN_VS_HUMAN) {
@@ -45,7 +45,8 @@ export const handleModeSelect = (mode) => {
 
     placementStateManager.setHumanPlacementMode(1);
     placementStateManager.setHumanPlacementMode(2);
-    placementStateManager.togglePlayerOverlay(2, true);
+    placementStateManager.togglePlayerOverlay(2);
+    placementStateManager.setPassScreen();
 
     displayToggle.displayGameLayout();
   }

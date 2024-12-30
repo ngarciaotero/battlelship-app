@@ -1,6 +1,7 @@
 import { getGameController } from "./modeSelectionHandler.js";
 import { updateBoardUI } from "../ui/updateBoardUI.js";
 import { updateStartButtonUI } from "../ui/updateStartBtnUI.js";
+import { updatePassButtonUI } from "../ui/updatePassBtnUI.js";
 
 const getCurrentPlayer = (suffix) => {
   const gameController = getGameController();
@@ -20,6 +21,7 @@ export const handleRandomPopulation = (suffix) => {
 
   updateBoardUI(suffix, currentPlayer.gameboard);
   updateStartButtonUI();
+  updatePassButtonUI(currentPlayer);
 };
 
 export const handleClearBoard = (suffix) => {
@@ -29,4 +31,5 @@ export const handleClearBoard = (suffix) => {
   currentPlayer.clearBoard();
   updateBoardUI(suffix, currentPlayer.gameboard);
   updateStartButtonUI();
+  updatePassButtonUI(currentPlayer);
 };

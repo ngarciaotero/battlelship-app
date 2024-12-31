@@ -93,11 +93,11 @@ export function createGameboard() {
   }
 
   function lockPositions(positions) {
-    positions.forEach((pos) => {
-      if (getShipAt(pos) === EMPTY_POSITION) {
-        setPositionValue(pos, LOCKED_POSITION);
-      }
-    });
+    const lockedPositions = positions.filter(
+      (pos) => getShipAt(pos) === EMPTY_POSITION
+    );
+    lockedPositions.forEach((pos) => setPositionValue(pos, LOCKED_POSITION));
+    return lockedPositions;
   }
 
   function validateShipPlacement(startPos, ship, orientation) {
@@ -173,9 +173,8 @@ export function createGameboard() {
 
   function markSunkShipSurroundings(ship) {
     const shipData = placedShips.get(ship);
-    if (!shipData || !ship.isSunk()) return;
-    const surroundingPositions = shipData.surroundingPositions;
-    lockPositions(surroundingPositions);
+    if (!shipData || !ship.isSunk()) return [];
+    return lockPositions(shipData.surroundingPositions);
   }
 
   function handleAttackResult(position) {
@@ -195,11 +194,9 @@ export function createGameboard() {
     const ship = currentValue;
     recordHit(position, ship);
 
-    if (ship.isSunk()) {
-      markSunkShipSurroundings(ship);
-    }
-
-    return { status: "hit" };
+    const lockedList = markSunkShipSurroundings(ship);
+    
+    return { status: "hit", lockedPositions: lockedList };
   }
 
   function getMissedAttacks() {

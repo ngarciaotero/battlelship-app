@@ -154,7 +154,7 @@ export function createGameController() {
 
     const attackOutcome = performAttack(move);
 
-    return handleMoveOutcome(attackOutcome);
+    return handleMoveOutcome(attackOutcome, move);
   }
 
   function performAttack(move) {
@@ -169,12 +169,13 @@ export function createGameController() {
     return { attackResult, winnerResult: determineWinner() };
   }
 
-  function handleMoveOutcome({ attackResult, winnerResult }) {
+  function handleMoveOutcome({ attackResult, winnerResult }, moveMade) {
     if (attackResult.status === "miss") {
       switchTurn();
       return {
         success: true,
         type: attackResult.status,
+        move: moveMade,
       };
     }
 
@@ -185,9 +186,16 @@ export function createGameController() {
           type: "win",
           winner: winnerResult.winner,
           loser: winnerResult.loser,
+          lockedPositions: attackResult.lockedPositions,
+          move: moveMade,
         };
       }
-      return { success: true, type: attackResult.status };
+      return {
+        success: true,
+        type: attackResult.status,
+        lockedPositions: attackResult.lockedPositions,
+        move: moveMade,
+      };
     }
     return { success: false, type: "invalid" };
   }

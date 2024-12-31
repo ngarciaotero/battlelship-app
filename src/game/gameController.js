@@ -38,7 +38,8 @@ export function createGameController() {
 
     for (const player of activePlayers) {
       if (player.isComputer()) {
-        moveGenerator = createMoveGenerator();
+        const opponentGameboard = activePlayers[0].gameboard;
+        moveGenerator = createMoveGenerator(opponentGameboard);
       }
     }
 

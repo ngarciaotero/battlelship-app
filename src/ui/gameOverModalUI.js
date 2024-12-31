@@ -1,4 +1,6 @@
 import { createElement } from "./helpers/createElement.js";
+import { handleEndGameButton } from "../eventHandler/endGameBtnHandler.js";
+import { handleRestartGameButton } from "../eventHandler/restartGameBtnHandler.js";
 
 export const createGameOverModal = () => {
   const gameoverBackdrop = createElement("div", [
@@ -21,6 +23,13 @@ export const createGameOverModal = () => {
     "end-game-modal-btn",
     "End Game"
   );
+
+  rematchButton.addEventListener("click", () => {
+    handleRestartGameButton();
+  });
+  endGameButton.addEventListener("click", () => {
+    handleEndGameButton();
+  });
 
   // build the modal
   optionsContainer.appendChild(rematchButton);

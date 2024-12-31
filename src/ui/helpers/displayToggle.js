@@ -7,7 +7,7 @@ export const displayToggle = {
       true,
       `.game-layout`,
       false,
-      ".gameover-modal",
+      ".gameover-backdrop",
       false
     );
   },
@@ -18,12 +18,12 @@ export const displayToggle = {
       true,
       `.mode-menu`,
       false,
-      ".gameover-modal",
+      ".gameover-backdrop",
       false
     );
   },
 
   displayGameOverModal: () => {
-    ".gameover-modal", true;
+    toggleVisibility(".gameover-backdrop", true);
   },
 };

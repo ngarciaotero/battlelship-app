@@ -7,8 +7,9 @@ export const createGameboardUI = (suffix) => {
   const grid = createGrid(`grid-${suffix}`, `cell-${suffix}`);
   const columnLabels = createAxisLabel("column-labels");
   const rowLabels = createAxisLabel("row-labels");
+  const overlay = createTurnOverlay(suffix);
 
-  board.append(columnLabels, rowLabels, grid);
+  board.append(columnLabels, rowLabels, grid, overlay);
   return board;
 };
 
@@ -41,4 +42,15 @@ const createAxisLabel = (axisClass) => {
   }
 
   return labelContainer;
+};
+
+// overlay section
+const createTurnOverlay = (suffix) => {
+  const overlay = createElement(
+    "div",
+    ["turn-overlay", `turn-${suffix}-overlay`, "hidden"],
+    "Waiting for opponent to finish ..."
+  );
+
+  return overlay;
 };

@@ -1,8 +1,12 @@
 import { createElement } from "./helpers/createElement.js";
 
 export const createGameOverModal = () => {
+  const gameoverBackdrop = createElement("div", [
+    "gameover-backdrop",
+    "hidden",
+  ]);
   // create modal container
-  const gameoverContainer = createElement("div", ["gameover-modal", "hidden"]);
+  const gameoverContainer = createElement("div", "gameover-modal");
 
   // create heading
   const heading = createElement("h1", null, "Game Over!");
@@ -25,5 +29,7 @@ export const createGameOverModal = () => {
   gameoverContainer.appendChild(heading);
   gameoverContainer.appendChild(optionsContainer);
 
-  return gameoverContainer;
+  gameoverBackdrop.appendChild(gameoverContainer);
+
+  return gameoverBackdrop;
 };

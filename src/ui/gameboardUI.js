@@ -16,8 +16,8 @@ export const createGameboardUI = (suffix) => {
 const createGrid = (gridClass, cellClass) => {
   const grid = createElement("div", ["grid", gridClass]);
 
-  for (let row = 0; row < BOARD_SIZE; row++) {
-    for (let col = 0; col < BOARD_SIZE; col++) {
+  for (let col = 0; col < BOARD_SIZE; col++) {
+    for (let row = 0; row < BOARD_SIZE; row++) {
       const cell = createElement("div", ["cell", cellClass]);
 
       // add data attributes for positioning

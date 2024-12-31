@@ -1,5 +1,5 @@
 import { getGameController } from "./modeSelectionHandler.js";
-import { updateBoardUI } from "../ui/updateBoardUI.js";
+import { boardUIHandler } from "../ui/stateManagers/boardStateManager.js";
 import { updateStartButtonUI } from "../ui/updateStartBtnUI.js";
 import { updatePassButtonUI } from "../ui/updatePassBtnUI.js";
 
@@ -19,7 +19,7 @@ export const handleRandomPopulation = (suffix) => {
   currentPlayer.clearBoard();
   currentPlayer.populateBoard();
 
-  updateBoardUI(suffix, currentPlayer.gameboard);
+  boardUIHandler.displayShipBoardUI(suffix, currentPlayer.gameboard);
   updateStartButtonUI();
   updatePassButtonUI(currentPlayer);
 };
@@ -29,7 +29,7 @@ export const handleClearBoard = (suffix) => {
   if (!currentPlayer) return;
 
   currentPlayer.clearBoard();
-  updateBoardUI(suffix, currentPlayer.gameboard);
+  boardUIHandler.displayShipBoardUI(suffix, currentPlayer.gameboard);
   updateStartButtonUI();
   updatePassButtonUI(currentPlayer);
 };

@@ -58,11 +58,11 @@ export function createPlayer(playerType) {
   }
 
   function resetGameboard() {
+    gameboard.resetGameboard();
+
     if (type === PLAYER_TYPE.COMPUTER) {
-      gameboard.resetGameboard();
       gameboard.populateRandomly();
     }
-    gameboard.resetGameboard();
   }
 
   function isComputer() {

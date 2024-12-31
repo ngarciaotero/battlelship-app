@@ -149,8 +149,7 @@ export function createGameController() {
 
     const currentPlayer = getCurrentPlayer();
     if (currentPlayer.isComputer() && !move) {
-      const opponentGameboard = getOpponentPlayer().gameboard;
-      move = moveGenerator.generateMove(opponentGameboard);
+      move = moveGenerator.generateMove();
     }
 
     const attackOutcome = performAttack(move);

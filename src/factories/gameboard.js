@@ -270,8 +270,8 @@ export function createGameboard() {
 
   function getAllAvailablePositions() {
     const availablePositions = [];
-    board.forEach((row, y) => {
-      row.forEach((cell, x) => {
+    board.forEach((row, x) => {
+      row.forEach((cell, y) => {
         if (typeof cell === "object") {
           availablePositions.push({ x, y });
         }

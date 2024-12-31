@@ -114,13 +114,6 @@ export function createGameController() {
 
     activePlayers.forEach((player) => player.resetGameboard());
 
-    for (const player of activePlayers) {
-      if (player.isComputer()) {
-        moveGenerator = createMoveGenerator();
-        break;
-      }
-    }
-
     gameStatus = GAME_STATUS.INACTIVE;
     currentPlayerIndex = -1;
 

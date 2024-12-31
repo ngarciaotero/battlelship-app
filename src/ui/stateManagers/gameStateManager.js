@@ -1,4 +1,5 @@
 import { toggleVisibility } from "../helpers/visibilityToggle.js";
+import { getGameController } from "../../eventHandler/modeSelectionHandler.js";
 
 export const gameStateManager = {
   setGameMode: (playerNum) => {
@@ -19,5 +20,14 @@ export const gameStateManager = {
       ".pass-screen-container",
       false
     );
+  },
+
+  updateTurnOverlay() {
+    const gameController = getGameController();
+    if (gameController.currentPlayer === gameController.allPlayers[0]) {
+      toggleVisibility(".turn-one-overlay", false, ".turn-two-overlay", true);
+    } else {
+      toggleVisibility(".turn-two-overlay", false, ".turn-one-overlay", true);
+    }
   },
 };

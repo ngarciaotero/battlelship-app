@@ -1,8 +1,24 @@
 import { toggleVisibility } from "../helpers/visibilityToggle.js";
 import { getGameController } from "../../eventHandler/modeSelectionHandler.js";
+import { boardUIHandler } from "./boardStateManager.js";
+import { cellUIHandler } from "./cellStateManager.js";
 
 export const gameStateManager = {
-  setGameMode: (playerNum) => {
+  setupGameMode() {
+    const gameController = getGameController();
+    gameController.initializeGame();
+
+    // reset and setup boards
+    boardUIHandler.clearBoardsUI();
+    cellUIHandler.setupAttackListeners();
+
+    // configure ui for game mode
+    this.gameLayoutUI(1);
+    this.gameLayoutUI(2);
+    this.updateTurnOverlay();
+  },
+
+  gameLayoutUI(playerNum) {
     const suffix = playerNum === 1 ? "one" : "two";
     toggleVisibility(
       `.placement-menu-${suffix}`,

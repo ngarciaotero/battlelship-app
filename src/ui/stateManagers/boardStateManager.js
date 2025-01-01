@@ -27,7 +27,7 @@ export const boardUIHandler = {
   // clear both boards when transitioning to game phase
   clearBoardsUI() {
     document.querySelectorAll(".cell").forEach((cell) => {
-      cell.classList.remove("ship");
+      cell.classList.remove("ship", "hit", "miss", "locked");
     });
   },
 

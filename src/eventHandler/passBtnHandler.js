@@ -1,6 +1,8 @@
 import { placementStateManager } from "../ui/stateManagers/placementStateManager.js";
 
 export const handlePassScreenButton = () => {
-  placementStateManager.togglePlayerOverlay(1);
-  placementStateManager.removePlayerOverlay(2);
+  const opponentPlayerNum = 1;
+  const currentPlayerNum = 2;
+
+  placementStateManager.passScreenUI(opponentPlayerNum, currentPlayerNum);
 };

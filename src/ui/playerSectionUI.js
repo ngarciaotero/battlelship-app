@@ -1,9 +1,7 @@
 import { createElement } from "./helpers/createElement.js";
 import { createGameboardUI } from "./gameboardUI.js";
-import {
-  handleRandomPopulation,
-  handleClearBoard,
-} from "../eventHandler/boardHandler.js";
+import { handleRandomPopulation } from "../eventHandler/randomBoardBtnHandler.js";
+import { handleClearBoard } from "../eventHandler/clearBoardBtnHandler.js";
 import { createPassDeviceUI } from "./passDeviceUI.js";
 
 export const createPlayerSection = (playerNum) => {

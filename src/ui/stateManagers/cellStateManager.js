@@ -1,5 +1,6 @@
 import { getGameController } from "../../eventHandler/modeSelectionHandler.js";
 import { handleAttackClick } from "../../eventHandler/attackClickHandler.js";
+import { isPlayerComputer } from "../../utils/playerUtils.js";
 
 export const cellUIHandler = {
   updateCellUI(cell, result) {
@@ -48,8 +49,4 @@ export const cellUIHandler = {
       });
     }
   },
-};
-
-const isPlayerComputer = (player) => {
-  return player.type === "computer";
 };

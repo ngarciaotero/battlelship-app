@@ -35,4 +35,10 @@ export const boardUIHandler = {
     updateStartButtonUI();
     updatePassButtonUI(currentPlayer);
   },
+
+  randomlyPopulateBoard(suffix, currentPlayer) {
+    this.displayShipBoardUI(suffix, currentPlayer.gameboard);
+    updateStartButtonUI();
+    updatePassButtonUI(currentPlayer);
+  },
 };

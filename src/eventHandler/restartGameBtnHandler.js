@@ -1,5 +1,9 @@
-import { displayToggle } from "../ui/helpers/displayToggle.js";
+import { placementStateManager } from "../ui/stateManagers/placementStateManager.js";
+import { getGameController } from "./modeSelectionHandler.js";
 
 export const handleRestartGameButton = () => {
-  displayToggle.displayGameLayout();
+  const gameController = getGameController();
+  gameController.resetGame();
+
+  placementStateManager.resetGameMode();
 };

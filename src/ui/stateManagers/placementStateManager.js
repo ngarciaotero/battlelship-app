@@ -137,7 +137,6 @@ export const placementStateManager = {
 
   resetGameMode() {
     const currentMode = this.determineCurrentMode();
-    gameController.resetGame();
     boardUIHandler.clearBoardsUI();
     this.setupPlacementState(currentMode);
     displayToggle.displayGameLayout();

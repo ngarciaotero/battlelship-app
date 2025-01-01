@@ -1,4 +1,3 @@
-import { getCurrentPlayer } from "../../utils/playerUtils.js";
 import { updatePassButtonUI } from "../updatePassBtnUI.js";
 import { updateStartButtonUI } from "../updateStartBtnUI.js";
 
@@ -31,12 +30,8 @@ export const boardUIHandler = {
     });
   },
 
-  clearShipsFromBoard(suffix, gameboard) {
-    const currentPlayer = getCurrentPlayer(suffix);
-    if (!currentPlayer) return;
-
-    currentPlayer.clearBoard();
-    this.displayShipBoardUI(suffix, gameboard);
+  clearShipsFromBoard(suffix, currentPlayer) {
+    this.displayShipBoardUI(suffix, currentPlayer.gameboard);
     updateStartButtonUI();
     updatePassButtonUI(currentPlayer);
   },

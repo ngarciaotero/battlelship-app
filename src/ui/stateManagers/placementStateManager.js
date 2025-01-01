@@ -74,6 +74,11 @@ export const placementStateManager = {
     );
   },
 
+  passScreenUI(opponentPlayerNum, currentPlayerNum) {
+    this.togglePlayerOverlay(opponentPlayerNum);
+    this.removePlayerOverlay(currentPlayerNum);
+  },
+
   getGameController() {
     return gameController;
   },

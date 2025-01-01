@@ -24,6 +24,10 @@ export const placementStateManager = {
       ".setup-controls",
       true,
       ".game-controls",
+      false,
+      ".turn-one-overlay",
+      false,
+      ".turn-two-overlay",
       false
     );
   },
@@ -38,7 +42,11 @@ export const placementStateManager = {
       `.board-${suffix}`,
       false,
       `.player-${suffix}-overlay`,
-      true
+      true,
+      ".turn-one-overlay",
+      false,
+      ".turn-two-overlay",
+      false
     );
   },
 

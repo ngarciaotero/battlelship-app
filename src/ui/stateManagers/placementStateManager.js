@@ -14,7 +14,7 @@ const MODES = {
 let gameController = null;
 
 export const placementStateManager = {
-  setHumanPlacementMode: (playerNum) => {
+  setHumanPlacementMode(playerNum) {
     const suffix = playerNum === 1 ? "one" : "two";
     toggleVisibility(
       `.placement-menu-${suffix}`,
@@ -28,7 +28,7 @@ export const placementStateManager = {
     );
   },
 
-  setComputerPlacementMode: (playerNum) => {
+  setComputerPlacementMode(playerNum) {
     const suffix = playerNum === 1 ? "one" : "two";
     toggleVisibility(
       `.placement-menu-${suffix}`,
@@ -42,7 +42,7 @@ export const placementStateManager = {
     );
   },
 
-  togglePlayerOverlay: (playerNum) => {
+  togglePlayerOverlay(playerNum) {
     const suffix = playerNum === 1 ? "one" : "two";
     toggleVisibility(
       `.player-${suffix}-overlay`,
@@ -52,11 +52,11 @@ export const placementStateManager = {
     );
   },
 
-  setPassScreen: () => {
+  setPassScreen() {
     toggleVisibility(`.pass-screen-container`, true);
   },
 
-  removePlayerOverlay: (playerNum) => {
+  removePlayerOverlay(playerNum) {
     const suffix = playerNum === 1 ? "one" : "two";
     toggleVisibility(
       `.player-${suffix}-overlay`,

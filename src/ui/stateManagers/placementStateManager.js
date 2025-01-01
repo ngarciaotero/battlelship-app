@@ -5,6 +5,8 @@ import { createPlayerSection } from "../playerSectionUI.js";
 import { displayToggle } from "../helpers/displayToggle.js";
 import { updateStartButtonUI } from "../updateStartBtnUI.js";
 import { boardUIHandler } from "./boardStateManager.js";
+import { getPlayer } from "../../utils/playerUtils.js";
+import { updatePassButtonUI } from "../updatePassBtnUI.js";
 
 const MODES = {
   HUMAN_VS_COMPUTER: "hvc",
@@ -121,6 +123,7 @@ export const placementStateManager = {
       this.setHumanPlacementMode(1);
       this.setHumanPlacementMode(2);
       this.setPassScreen();
+      updatePassButtonUI(getPlayer("one"));
     }
     this.togglePlayerOverlay(2);
   },

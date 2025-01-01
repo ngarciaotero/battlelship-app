@@ -1,3 +1,7 @@
+import { getCurrentPlayer } from "../../utils/playerUtils.js";
+import { updatePassButtonUI } from "../updatePassBtnUI.js";
+import { updateStartButtonUI } from "../updateStartBtnUI.js";
+
 export const boardUIHandler = {
   displayShipBoardUI(suffix, gameboard) {
     // update board to show ships during placement phase
@@ -25,5 +29,15 @@ export const boardUIHandler = {
     document.querySelectorAll(".cell").forEach((cell) => {
       cell.classList.remove("ship");
     });
+  },
+
+  clearShipsFromBoard(suffix, gameboard) {
+    const currentPlayer = getCurrentPlayer(suffix);
+    if (!currentPlayer) return;
+
+    currentPlayer.clearBoard();
+    this.displayShipBoardUI(suffix, gameboard);
+    updateStartButtonUI();
+    updatePassButtonUI(currentPlayer);
   },
 };

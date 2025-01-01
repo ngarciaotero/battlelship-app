@@ -5,9 +5,6 @@ import { cellUIHandler } from "./cellStateManager.js";
 
 export const gameStateManager = {
   setupGameMode() {
-    const gameController = getGameController();
-    gameController.initializeGame();
-
     // reset and setup boards
     boardUIHandler.clearBoardsUI();
     cellUIHandler.setupAttackListeners();

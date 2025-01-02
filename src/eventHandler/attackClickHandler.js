@@ -3,6 +3,7 @@ import { displayToggle } from "../ui/helpers/displayToggle.js";
 import { cellUIHandler } from "../ui/stateManagers/cellStateManager.js";
 import { gameStateManager } from "../ui/stateManagers/gameStateManager.js";
 import { messageUI } from "../ui/stateManagers/messageStateManager.js";
+import { shipStatusUI } from "../ui/stateManagers/shipStatusManager.js";
 
 export const handleAttackClick = (event) => {
   const cell = event.target;
@@ -59,6 +60,7 @@ const processMoveResult = (targetCell, moveResult, boardSuffix) => {
 
   if (hasShipBeenSunk(moveResult)) {
     cellUIHandler.lockCells(moveResult.lockedPositions, boardSuffix);
+    shipStatusUI.displayShipTrack(moveResult.ship, boardSuffix);
     messageUI.updateMessageUI(boardSuffix, { type: "sunk" });
   } else {
     messageUI.updateMessageUI(boardSuffix, moveResult);

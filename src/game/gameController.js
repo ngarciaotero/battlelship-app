@@ -188,6 +188,7 @@ export function createGameController() {
           loser: winnerResult.loser,
           lockedPositions: attackResult.lockedPositions,
           move: moveMade,
+          ship: attackResult.ship,
         };
       }
       return {
@@ -195,6 +196,7 @@ export function createGameController() {
         type: attackResult.status,
         lockedPositions: attackResult.lockedPositions,
         move: moveMade,
+        ship: attackResult.ship,
       };
     }
     return { success: false, type: "invalid" };

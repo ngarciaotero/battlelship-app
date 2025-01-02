@@ -3,6 +3,7 @@ import { createGameboardUI } from "./gameboardUI.js";
 import { handleRandomPopulation } from "../eventHandler/randomBoardBtnHandler.js";
 import { handleClearBoard } from "../eventHandler/clearBoardBtnHandler.js";
 import { createPassDeviceUI } from "./passDeviceUI.js";
+import { createShipTrackerBoard } from "./shipStatusBoardUI.js";
 
 export const createPlayerSection = (playerNum) => {
   const suffix = playerNum === 1 ? "one" : "two";
@@ -105,12 +106,9 @@ const createScoreboardContainer = (suffix) => {
     `scoreboard-${suffix}`,
     "hidden",
   ]);
-  const scoreboardTitle = createElement("h4", null, "Ships Status");
+  const scoreboardTitle = createElement("h4", null, "Ship Tracker");
 
-  const placedShips = createElement("div", [
-    "placed-ships",
-    `placed-ships-${suffix}`,
-  ]);
+  const placedShips = createShipTrackerBoard(suffix);
 
   scoreboardContainer.append(scoreboardTitle, placedShips);
   return scoreboardContainer;

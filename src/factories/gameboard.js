@@ -195,8 +195,8 @@ export function createGameboard() {
     recordHit(position, ship);
 
     const lockedList = markSunkShipSurroundings(ship);
-    
-    return { status: "hit", lockedPositions: lockedList };
+
+    return { status: "hit", lockedPositions: lockedList, ship };
   }
 
   function getMissedAttacks() {

@@ -67,10 +67,7 @@ const processMoveResult = (targetCell, moveResult, boardSuffix) => {
 
 // check if ship was sunk
 const hasShipBeenSunk = (moveResult) => {
-  return (
-    (moveResult.type === "win" || moveResult.type === "hit") &&
-    moveResult.lockedPositions?.length > 0
-  );
+  return moveResult.ship.isSunk();
 };
 
 // process win condition

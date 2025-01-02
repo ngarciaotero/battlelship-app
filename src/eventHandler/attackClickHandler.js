@@ -2,6 +2,7 @@ import { getGameController } from "./modeSelectionHandler.js";
 import { displayToggle } from "../ui/helpers/displayToggle.js";
 import { cellUIHandler } from "../ui/stateManagers/cellStateManager.js";
 import { gameStateManager } from "../ui/stateManagers/gameStateManager.js";
+import { messageUI } from "../ui/stateManagers/messageStateManager.js";
 
 export const handleAttackClick = (event) => {
   const cell = event.target;
@@ -12,45 +13,80 @@ export const handleAttackClick = (event) => {
 
 const processGameTurn = (cell, boardSuffix) => {
   const gameController = getGameController();
-  let moveResult;
-
-  // human player's attack
-  if (cell) {
-    const move = {
-      x: parseInt(cell.dataset.x),
-      y: parseInt(cell.dataset.y),
-    };
-    moveResult = gameController.makeMove(move);
-  } else {
-    // handle computer player's attack
-    moveResult = gameController.makeMove(null);
-  }
+  const moveResult = getMoveResult(cell, gameController);
 
   // if move wasn't successful, return early
-  if (!moveResult.success) return;
-
-  const targetCell = cell || getComputerCell(moveResult.move, boardSuffix);
-  cellUIHandler.updateCellUI(targetCell, moveResult.type);
-
-  if (moveResult.type === "win" || moveResult.type === "hit") {
-    cellUIHandler.lockCells(moveResult.lockedPositions, boardSuffix);
+  if (!moveResult.success) {
+    messageUI.updateMessageUI(boardSuffix, moveResult);
+    return;
   }
 
+  const targetCell = cell || getComputerCell(moveResult.move, boardSuffix);
+  processMoveResult(targetCell, moveResult, boardSuffix);
+
   if (moveResult.type === "win") {
-    displayToggle.displayGameOverModal();
+    handleWinCondition(boardSuffix, moveResult);
     return;
   }
 
   gameStateManager.updateTurnOverlay();
 
-  //   if computer's turn, process the next move after a delay
   if (gameController.currentPlayer.isComputer()) {
-    setTimeout(() => {
-      processGameTurn(null, "two");
-    }, 1000);
+    scheduleComputerTurn();
   }
 };
 
+// get move result based on player type
+const getMoveResult = (cell, gameController) => {
+  if (cell) {
+    const move = {
+      x: parseInt(cell.dataset.x),
+      y: parseInt(cell.dataset.y),
+    };
+    return gameController.makeMove(move);
+  }
+  return gameController.makeMove(null);
+};
+
+// update board based on move result
+const processMoveResult = (targetCell, moveResult, boardSuffix) => {
+  cellUIHandler.updateCellUI(targetCell, moveResult.type);
+
+  if (moveResult.type === "miss") {
+    messageUI.updateMessageUI(boardSuffix, moveResult);
+    return;
+  }
+
+  if (hasShipBeenSunk(moveResult)) {
+    cellUIHandler.lockCells(moveResult.lockedPositions, boardSuffix);
+    messageUI.updateMessageUI(boardSuffix, { type: "sunk" });
+  } else {
+    messageUI.updateMessageUI(boardSuffix, moveResult);
+  }
+};
+
+// check if ship was sunk
+const hasShipBeenSunk = (moveResult) => {
+  return (
+    (moveResult.type === "win" || moveResult.type === "hit") &&
+    moveResult.lockedPositions?.length > 0
+  );
+};
+
+// process win condition
+const handleWinCondition = (boardSuffix, moveResult) => {
+  messageUI.updateMessageUI(boardSuffix, moveResult);
+  displayToggle.displayGameOverModal();
+};
+
+// schedule computer's turn
+const scheduleComputerTurn = () => {
+  setTimeout(() => {
+    processGameTurn(null, "two");
+  }, 1000);
+};
+
+// get computer's target cell
 const getComputerCell = (move, boardSuffix) => {
   return document.querySelector(
     `.cell-${boardSuffix}[data-x="${move.x}"][data-y="${move.y}"]`

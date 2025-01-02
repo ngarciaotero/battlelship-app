@@ -7,6 +7,7 @@ import { updateStartButtonUI } from "../updateStartBtnUI.js";
 import { boardUIHandler } from "./boardStateManager.js";
 import { getPlayer } from "../../utils/playerUtils.js";
 import { updatePassButtonUI } from "../updatePassBtnUI.js";
+import { messageUI } from "./messageStateManager.js";
 
 const MODES = {
   HUMAN_VS_COMPUTER: "hvc",
@@ -141,5 +142,7 @@ export const placementStateManager = {
     this.setupPlacementState(currentMode);
     displayToggle.displayGameLayout();
     updateStartButtonUI();
+    messageUI.clearMessageBoard("one");
+    messageUI.clearMessageBoard("two");
   },
 };

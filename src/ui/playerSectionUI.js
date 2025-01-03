@@ -5,6 +5,7 @@ import { handleClearBoard } from "../eventHandler/clearBoardBtnHandler.js";
 import { createPassDeviceUI } from "./passDeviceUI.js";
 import { createShipTrackerBoard } from "./shipStatusBoardUI.js";
 import { createUnplacedShipContainer } from "./shipDockUI.js";
+import { handleRotateButton } from "../eventHandler/rotateButtonHandler.js";
 
 export const createPlayerSection = (playerNum) => {
   const suffix = playerNum === 1 ? "one" : "two";
@@ -143,6 +144,7 @@ const createOverlay = (suffix) => {
 const createRotateButton = (suffix) => {
   const rotateContainer = createElement("div", "rotate-container");
   const rotateButton = createElement("button", "rotate-button", "↻");
+  rotateButton.addEventListener("click", () => handleRotateButton(suffix));
   rotateContainer.append(rotateButton);
   return rotateContainer;
 };

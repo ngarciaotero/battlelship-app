@@ -27,8 +27,8 @@ export function createGameboard() {
   function isShipInBounds(startPos, shipLength, orientation) {
     const endPos =
       orientation === AXIS.HORIZONTAL
-        ? startPos.x + shipLength
-        : startPos.y + shipLength;
+        ? startPos.x + shipLength - 1
+        : startPos.y + shipLength - 1;
 
     return endPos < BOARD_SIZE;
   }

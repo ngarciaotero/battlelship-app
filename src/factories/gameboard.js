@@ -3,7 +3,7 @@ import { createShip } from "./ship";
 
 const BOARD_SIZE = 10;
 const AXIS = Object.freeze({ HORIZONTAL: "horizontal", VERTICAL: "vertical" });
-
+const SHIP_MAX = 5;
 const LOCKED_POSITION = 0;
 const EMPTY_POSITION = null;
 const MISSED_POSITION = -1;
@@ -129,6 +129,8 @@ export function createGameboard() {
 
   function placeShip(ship, startPos, orientation) {
     if (!validateShipPlacement(startPos, ship, orientation)) return false;
+
+    if (placedShips.size === SHIP_MAX) return false;
 
     const shipPositions = getShipPositions(startPos, ship.length, orientation);
 

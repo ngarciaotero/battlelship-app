@@ -4,6 +4,7 @@ import { handleRandomPopulation } from "../eventHandler/randomBoardBtnHandler.js
 import { handleClearBoard } from "../eventHandler/clearBoardBtnHandler.js";
 import { createPassDeviceUI } from "./passDeviceUI.js";
 import { createShipTrackerBoard } from "./shipStatusBoardUI.js";
+import { createUnplacedShipContainer } from "./shipDockUI.js";
 
 export const createPlayerSection = (playerNum) => {
   const suffix = playerNum === 1 ? "one" : "two";
@@ -82,10 +83,10 @@ const createManualSetup = (suffix) => {
     "Drag and drop ships to position them"
   );
 
-  const unplacedShips = createElement("div", [
-    "unplaced-ships",
-    `unplaced-ships-${suffix}`,
-  ]);
+  const rotateContainer = createRotateButton(suffix);
+
+  const unplacedShips = createUnplacedShipContainer(suffix);
+
   const clearBtn = createElement("button", "clear-board-btn", "Clear Board");
 
   clearBtn.addEventListener("click", () => handleClearBoard(suffix));
@@ -93,6 +94,7 @@ const createManualSetup = (suffix) => {
   manualSetup.append(
     manualSetupTitle,
     setupInstructions,
+    rotateContainer,
     unplacedShips,
     clearBtn
   );
@@ -135,4 +137,12 @@ const createOverlay = (suffix) => {
   );
 
   return overlay;
+};
+
+// rotate button
+const createRotateButton = (suffix) => {
+  const rotateContainer = createElement("div", "rotate-container");
+  const rotateButton = createElement("button", "rotate-button", "↻");
+  rotateContainer.append(rotateButton);
+  return rotateContainer;
 };

@@ -1,6 +1,7 @@
 import { getGameController } from "../../eventHandler/modeSelectionHandler.js";
 import { handleAttackClick } from "../../eventHandler/attackClickHandler.js";
 import { isPlayerComputer } from "../../utils/playerUtils.js";
+import { dragDropUIHandler } from "./dragAndDropStateManager.js";
 
 export const cellUIHandler = {
   updateCellUI(cell, result) {
@@ -37,5 +38,46 @@ export const cellUIHandler = {
       const newCell = this.removeCellListeners(cell);
       newCell.addEventListener("click", eventHandler);
     });
+  },
+
+  removeCellListeners(cell) {
+    const newCell = cell.cloneNode(true);
+    cell.parentNode.replaceChild(newCell, cell);
+    return newCell;
+  },
+
+  // drag and drop feature
+  setupCellDropZone(suffix) {
+    const cells = document.querySelectorAll(`.cell-${suffix}`);
+
+    cells.forEach((cell) => {
+      const newCell = this.removeCellListeners(cell);
+      this.attachDropZoneEvents(newCell, suffix);
+    });
+  },
+
+  attachDropZoneEvents(cell, suffix) {
+    Object.entries(dropZoneEvents).forEach(([eventName, handler]) => {
+      cell.addEventListener(eventName, (e) => handler(e, cell, suffix));
+    });
+  },
+};
+
+const dropZoneEvents = {
+  dragenter: (e, cell, suffix) => {
+    e.preventDefault();
+    dragDropUIHandler.updateDropZoneHighlight(e, cell, suffix, true);
+  },
+  dragover: (e, cell, suffix) => {
+    e.preventDefault();
+    dragDropUIHandler.updateDropZoneHighlight(e, cell, suffix, true);
+  },
+  dragleave: (e, cell, suffix) => {
+    e.preventDefault();
+    dragDropUIHandler.updateDropZoneHighlight(e, cell, suffix, false);
+  },
+  drop: (e, cell, suffix) => {
+    e.preventDefault();
+    dragDropUIHandler.handleShipDrop(e, cell, suffix);
   },
 };

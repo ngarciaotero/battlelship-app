@@ -136,6 +136,43 @@ export const dragDropUIHandler = {
       if (targetCell) targetCell.classList.add(CSS_CLASSES.HIGHLIGHT);
     });
   },
+
+  resetDockShips(suffix) {
+    domUtils.getShipElements(suffix).forEach((shipBody) => {
+      shipBody.classList.remove(SHIP_STATES.PLACED);
+      domUtils.setShipState(shipBody, true, false);
+
+      shipBody.querySelectorAll(".ship-segment").forEach((segment) => {
+        segment.classList.remove(SHIP_STATES.SEGMENT_PLACED);
+      });
+    });
+
+    // reset all orientations to horizontal
+    const currentOrientation =
+      document.querySelector(`.dock-ship-${suffix}`)?.dataset.orientation ||
+      ORIENTATIONS.HORIZONTAL;
+    if (currentOrientation !== ORIENTATIONS.HORIZONTAL) {
+      domUtils.updateOrientation(
+        suffix,
+        currentOrientation,
+        ORIENTATIONS.HORIZONTAL
+      );
+    }
+  },
+
+  handleRotateShips(suffix) {
+    const shipElements = document.querySelectorAll(`.dock-ship-${suffix}`);
+    if (!shipElements.length) return;
+
+    const currentOrientation =
+      shipElements[0].dataset.orientation || ORIENTATIONS.HORIZONTAL;
+    const newOrientation =
+      currentOrientation === ORIENTATIONS.HORIZONTAL
+        ? ORIENTATIONS.VERTICAL
+        : ORIENTATIONS.HORIZONTAL;
+
+    domUtils.updateOrientation(suffix, currentOrientation, newOrientation);
+  },
 };
 
 // helper functions for DOM operations
@@ -167,6 +204,35 @@ const domUtils = {
       .querySelectorAll(`.${className}`)
       .forEach((element) => element.classList.remove(className));
   },
+
+  updateOrientation: (suffix, currentOrientation, newOrientation) => {
+    const updates = getOrientationUpdates(
+      suffix,
+      currentOrientation,
+      newOrientation
+    );
+
+    updates.forEach(({ selector, oldClass, newClass }) => {
+      const elements = document.querySelectorAll(selector);
+      elements.forEach((element) => {
+        if (selector.includes("dock-ship")) {
+          element.dataset.orientation = newOrientation;
+        }
+        element.classList.remove(oldClass);
+        element.classList.add(newClass);
+      });
+    });
+
+    // update drag-orientation for any ships that have it
+    const shipBodies = document.querySelectorAll(
+      `.dock-ship-${suffix} .ship-body`
+    );
+    shipBodies.forEach((ship) => {
+      if (ship.dataset.dragOrientation) {
+        ship.dataset.dragOrientation = newOrientation;
+      }
+    });
+  },
 };
 
 // helper functions for position calculation
@@ -183,3 +249,26 @@ const positionUtils = {
     y: parseInt(cell.dataset.y),
   }),
 };
+
+const getOrientationUpdates = (suffix, currentOrientation, newOrientation) => [
+  {
+    selector: `.ship-dock-${suffix}`,
+    oldClass: `ship-dock-${currentOrientation}`,
+    newClass: `ship-dock-${newOrientation}`,
+  },
+  {
+    selector: `.dock-ship-${suffix}`,
+    oldClass: `dock-ship-${currentOrientation}`,
+    newClass: `dock-ship-${newOrientation}`,
+  },
+  {
+    selector: `.dock-ship-${suffix} .ship-label`,
+    oldClass: `ship-label-${currentOrientation}`,
+    newClass: `ship-label-${newOrientation}`,
+  },
+  {
+    selector: `.dock-ship-${suffix} .ship-body`,
+    oldClass: `ship-${currentOrientation}`,
+    newClass: `ship-${newOrientation}`,
+  },
+];

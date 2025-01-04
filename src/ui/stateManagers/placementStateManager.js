@@ -9,6 +9,7 @@ import { getPlayer } from "../../utils/playerUtils.js";
 import { updatePassButtonUI } from "../updatePassBtnUI.js";
 import { messageUI } from "./messageStateManager.js";
 import { shipStatusUI } from "./shipStatusManager.js";
+import { dragDropUIHandler } from "./dragAndDropStateManager.js";
 
 const MODES = {
   HUMAN_VS_COMPUTER: "hvc",
@@ -92,7 +93,8 @@ export const placementStateManager = {
     this.initializeController(mode);
     this.setupPlacementState(mode);
     displayToggle.displayGameLayout();
-
+    dragDropUIHandler.initializeDragAndDrop("one");
+    dragDropUIHandler.initializeDragAndDrop("two");
     return gameController;
   },
 
@@ -143,6 +145,10 @@ export const placementStateManager = {
     this.setupPlacementState(currentMode);
     displayToggle.displayGameLayout();
     updateStartButtonUI();
+    dragDropUIHandler.resetDockShips("one");
+    dragDropUIHandler.resetDockShips("two");
+    dragDropUIHandler.initializeDragAndDrop("one");
+    dragDropUIHandler.initializeDragAndDrop("two");
     messageUI.clearMessageBoard("one");
     messageUI.clearMessageBoard("two");
     shipStatusUI.clearShipTracker();

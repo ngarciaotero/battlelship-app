@@ -24,29 +24,18 @@ export const cellUIHandler = {
     const gameController = getGameController();
 
     const playerOneCells = document.querySelectorAll(".cell-one");
-
-    // set up listeners for player one's board
-    playerOneCells.forEach((cell) => {
-      // remove existing listeners by cloning
-      const newCell = cell.cloneNode(true);
-      cell.parentNode.replaceChild(newCell, cell);
-
-      newCell.addEventListener("click", (e) => {
-        handleAttackClick(e);
-      });
-    });
+    this.setupCellListeners(playerOneCells, handleAttackClick);
 
     if (!isPlayerComputer(gameController.allPlayers[1])) {
       const playerTwoCells = document.querySelectorAll(".cell-two");
-      // set up listeners for player two's board
-      playerTwoCells.forEach((cell) => {
-        const newCell = cell.cloneNode(true);
-        cell.parentNode.replaceChild(newCell, cell);
-
-        newCell.addEventListener("click", (e) => {
-          handleAttackClick(e);
-        });
-      });
+      this.setupCellListeners(playerTwoCells, handleAttackClick);
     }
+  },
+
+  setupCellListeners(cells, eventHandler) {
+    cells.forEach((cell) => {
+      const newCell = this.removeCellListeners(cell);
+      newCell.addEventListener("click", eventHandler);
+    });
   },
 };

@@ -110,5 +110,22 @@ export function createMoveGenerator(gameboard) {
     return newNode;
   };
 
+  // state checks
+  const lastMoveWasHit = () =>
+    state.previousMove &&
+    gameboard.successfulAttacks.some((pos) =>
+      isPositionEqual(pos, state.previousMove)
+    );
+
+  const getLastHitPosition = () =>
+    gameboard.successfulAttacks[gameboard.successfulAttacks.length - 1];
+
+  const storeMoveIfShip = (move) => {
+    const currentValue = gameboard.getShipAt(move);
+    if (typeof currentValue === "object" && currentValue !== null) {
+      state.currentShip = currentValue;
+    }
+  };
+
   return { generateMove };
 }

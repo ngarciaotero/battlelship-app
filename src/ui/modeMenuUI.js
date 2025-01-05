@@ -1,3 +1,4 @@
+import { createAttributionsUI } from "./attributionUI.js";
 import { createElement } from "./helpers/createElement.js";
 
 const MODES = {
@@ -53,6 +54,9 @@ export const createModeMenu = (onModeSelect) => {
 
   // add mode options to container
   menuContainer.appendChild(modeOptions);
+
+  // create attribution footer
+  menuContainer.appendChild(createAttributionsUI());
 
   return menuContainer;
 };

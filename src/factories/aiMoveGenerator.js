@@ -127,5 +127,55 @@ export function createMoveGenerator(gameboard) {
     }
   };
 
+  // move generation
+  const smartRandomMove = () => {
+    const availableMoves = gameboard.getAllAvailablePositions();
+    const checkerboardMoves = availableMoves.filter(
+      (move) => (move.x + move.y) % 2 === 0
+    );
+
+    const moves =
+      checkerboardMoves.length > 0 ? checkerboardMoves : availableMoves;
+    const move = moves[Math.floor(Math.random() * moves.length)];
+
+    storeMoveIfShip(move);
+    state.previousMove = move;
+    return move;
+  };
+
+  const getNextSearchMove = () => {
+    const untried = findUntried(state.searchTree);
+    if (!untried) return null;
+
+    state.currentNode.tried = true;
+    state.currentNode = untried;
+    state.previousMove = untried.position;
+    return untried.position;
+  };
+
+  // main move generation orchestrator
+  const generateMove = () => {
+    if (state.currentShip?.isSunk()) {
+      state.currentShip = null;
+      state.searchTree = null;
+      state.currentNode = null;
+    } else if (lastMoveWasHit() && !state.searchTree) {
+      createSearchTree(getLastHitPosition());
+      return getNextSearchMove() || smartRandomMove();
+    }
+
+    if (state.searchTree) {
+      if (lastMoveWasHit()) {
+        const expandedMove = expandSearchPath();
+        if (expandedMove) {
+          return expandedMove.position;
+        }
+      }
+      return getNextSearchMove() || smartRandomMove();
+    }
+
+    return smartRandomMove();
+  };
+
   return { generateMove };
 }

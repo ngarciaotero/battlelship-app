@@ -222,8 +222,13 @@ describe("Game Controller", () => {
     test("should successfully make a hit move", () => {
       computerPlayer.gameboard.receiveAttack.mockReturnValue({ status: "hit" });
       moveResult = gameController.makeMove(mockMove);
+      const expectedMoveResult = {
+        success: true,
+        type: "hit",
+        move: { x: 1, y: 1 },
+      };
 
-      expect(moveResult).toEqual({ success: true, type: "hit" });
+      expect(moveResult).toEqual(expectedMoveResult);
     });
 
     test("should successfully make a miss move", () => {
@@ -232,7 +237,13 @@ describe("Game Controller", () => {
       });
       moveResult = gameController.makeMove(mockMove);
 
-      expect(moveResult).toEqual({ success: true, type: "miss" });
+      const expectedMoveResult = {
+        success: true,
+        type: "miss",
+        move: { x: 1, y: 1 },
+      };
+
+      expect(moveResult).toEqual(expectedMoveResult);
     });
 
     test("should prevent moves when game is not active", () => {
@@ -256,14 +267,17 @@ describe("Game Controller", () => {
       computerPlayer.gameboard.receiveAttack.mockReturnValue({ status: "hit" });
       computerPlayer.isDefeated.mockReturnValue(true);
 
-      moveResult = gameController.makeMove(mockMove);
-
-      expect(moveResult).toEqual({
+      const expectedMoveResult = {
         success: true,
         type: "win",
         winner: realPlayer,
         loser: computerPlayer,
-      });
+        move: { x: 1, y: 1 },
+      };
+
+      moveResult = gameController.makeMove(mockMove);
+
+      expect(moveResult).toEqual(expectedMoveResult);
     });
 
     test("should prevent move on already attacked coordinate", () => {

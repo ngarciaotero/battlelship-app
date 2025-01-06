@@ -6,6 +6,11 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "test:ship": "jest ship.test.js",
+    "test:gameboard": "jest gameboard.test.js",
+    "test:player": "jest player.test.js",
+    "test:randomConfig": "jest randomShipConfig.test.js",
+    "test:gameController": "jest gameController.test.js",
     "watch": "webpack --watch --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "build:dev": "webpack --config webpack.dev.js",

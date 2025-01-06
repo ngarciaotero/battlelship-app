@@ -1,45 +1,78 @@
-# Webpack Starter Template
+# Battleship App
 
-This is a basic Webpack starter template for web development projects. It provides both development and production builds.
+Implementation of the classic Battleship game with engaging UI features and intelligent gameplay for both human and computer players.
+
+---
+
+## Table of Contents
+
+- [Features](#features)
+  - [Game Modes](#game-modes)
+  - [Placement Modes](#placement-modes)
+  - [Gameplay Mechanics](#gameplay-mechanics)
+- [Setup](#setup)
+
+---
 
 ## Features
 
-- Separate configurations for development and production
-- HTML, CSS, and JavaScript processing
-- Asset handling (images and fonts)
-- Development server with live loading
-- Production build optimization
+### Game Modes
 
-## Getting Started
+1. **Human vs Computer (HVC)**
 
-To use this template:
+   - Human players face off against an AI opponent with intelligent move generation.
+   - Human player provides attack coordinates by clicking the grid.
 
-1. Click the "Use this template" button on Github, or clone this repository.
-2. Navigate to the project directory:
+2. **Human vs Human (HVH)**
+   - Two human players play on the same device with a "pass device" feature for fair gameplay.
+   - Players take turns providing attack coordinates by clicking the grid.
 
-```bash
-cd webpack-starter-template
-```
+### Placement Modes
 
-3. Install dependencies:
+1. **Human Player:**
 
-```bash
-npm install
-```
+   - Drag-and-drop ships onto the board.
+   - Generate random ship placement with a button.
 
-## Scripts
+2. **Computer Player:**
 
-- `npm start`: Runs the development server
-- `npm run build`: Creates a production build
-- `npm run watch`: Watches for changes and rebuilds (without dev server)
-- `npm run deploy`: Deploys to Github Pages (pushes dist folder to gh-pages branch)
+   - Automatically generates its own ship placements (drag-and-drop not applicable).
 
-## Configuration Files
+3. **Human vs Computer:**
 
-- `webpack.common.js`: Common configuration shared between development and production
-- `webpack.dev.js`: Development-specific configuration
-- `webpack.prod.js`: Production-specific configuration
+   - Human player places ships while the computer's board is hidden.
 
-## Dependencies
+4. **Human vs Human:**
+   - Pass device feature ensures fair ship placement:
+     - Human player 1 places their ships.
+     - After clicking "Continue," human player 2 places their ships.
+     - Boards are hidden and revealed appropriately.
 
-This template uses Webpack 5 and includes loaders for HTML, CSS, and file assets. Check `package.json` for the full list of dependencies.
+### Gameplay Mechanics
+
+- **Turn Management:**
+
+  - Turns are visually enforced using a dark translucent overlay on the inactive player's board.
+
+- **Computer AI:**
+
+  - Random attacks in a checkerboard pattern for higher probability of hits.
+  - Once a hit is made, a tree algorithm targets adjacent slots in the direction of the ship's orientation until it is sunk.
+
+- **Sinking Ships:**
+
+  - Each player's gameboard is accompanied by a ship dock UI.
+  - Sunk ships glow red in the dock to provide a real-time visual of game progress.
+
+- **Game End:**
+  - Players can choose to rematch or end the game.
+
+![Gameplay Screenshot](src/images/gameplay/game-mode.png)
+
+## Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/battlelship-app.git
+   cd battlelship-app
+   ```

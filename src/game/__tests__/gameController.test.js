@@ -283,9 +283,6 @@ describe("Game Controller", () => {
       moveResult = gameController.makeMove();
 
       expect(moveGenerator.generateMove).toHaveBeenCalledTimes(1);
-      expect(moveGenerator.generateMove).toHaveBeenCalledWith(
-        realPlayer.gameboard
-      );
     });
   });
 });

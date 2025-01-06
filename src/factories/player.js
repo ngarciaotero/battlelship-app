@@ -1,4 +1,4 @@
-import { createGameboard } from "./gameboard";
+import { createGameboard } from "./gameboard.js";
 
 const PLAYER_TYPE = Object.freeze({ REAL: "real", COMPUTER: "computer" });
 

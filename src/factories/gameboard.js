@@ -1,5 +1,5 @@
-import { createRandomShipConfig } from "./randomShipConfig";
-import { createShip } from "./ship";
+import { createRandomShipConfig } from "./randomShipConfig.js";
+import { createShip } from "./ship.js";
 
 const BOARD_SIZE = 10;
 const AXIS = Object.freeze({ HORIZONTAL: "horizontal", VERTICAL: "vertical" });
